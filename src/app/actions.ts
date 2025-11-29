@@ -1,7 +1,9 @@
+
 "use server";
 
 import { z } from "zod";
-import { logger } from "@/lib/logger";
+import { Resend } from "resend";
+import { logger } from '@/lib/logger';
 
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -19,7 +21,7 @@ export type ContactFormState = {
   message?: string;
 };
 
-const SIMULATED_DELAY_MS = 1000;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitContactForm(
   prevState: ContactFormState | null,
@@ -39,28 +41,45 @@ export async function submitContactForm(
     };
   }
 
-  try {
-    // Here you would typically send the data to your backend, e.g., Firebase.
-    // For this example, we'll just log it and simulate success.
-    logger.info("Form data submitted:", validatedFields.data);
-
-    // Simulate database operation
-    await new Promise<void>((resolve) => setTimeout(resolve, SIMULATED_DELAY_MS));
-    
-    return {
-      success: true,
-      message: "¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.",
-    };
-
-  } catch (error) {
-    // Log error in development for debugging
-    if (error instanceof Error) {
-      logger.error("Contact form error:", error.message);
-    }
-    
+  const to = process.env.CONTACT_EMAIL;
+  if (!to) {
     return {
       success: false,
-      message: "Algo salió mal. Por favor, inténtalo de nuevo.",
+      message: "No se encontró CONTACT_EMAIL en .env. Por favor, configúralo.",
+    };
+  }
+
+  try {
+    // Sanity: log that we're about to send
+    logger.info('Sending contact email to', to, 'using Resend API key present?', Boolean(process.env.RESEND_API_KEY));
+
+    const resp: unknown = await resend.emails.send({
+      from: "no-reply@resend.dev",
+      to,
+      subject: "Nuevo mensaje desde tu portafolio",
+      text: `Nombre: ${validatedFields.data.name}\nEmail: ${validatedFields.data.email}\nMensaje: ${validatedFields.data.message}`,
+    });
+
+    logger.info('Resend response:', resp);
+
+    // Safely extract an id/messageId from the response without using `any`
+    let respId: string | null = null;
+    if (resp && typeof resp === 'object') {
+      const r = resp as Record<string, unknown>;
+      if (typeof r.id === 'string') respId = r.id;
+      else if (typeof r.messageId === 'string') respId = r.messageId;
+    }
+
+    return {
+      success: true,
+      message: respId ? `¡Mensaje enviado! id: ${respId}` : '¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.',
+    };
+  } catch (error) {
+    // Log full error for debugging
+    logger.error('Resend send error:', error instanceof Error ? error.message : error);
+    return {
+      success: false,
+      message: `Algo salió mal al enviar el correo. ${(error instanceof Error) ? error.message : ''}`,
     };
   }
 }

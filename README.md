@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portafolio Web Next.js + Tailwind + TypeScript
 
-## Getting Started
+## Demo y configuración rápida
 
-First, run the development server:
+Este proyecto es una plantilla profesional lista para desplegar y vender. Incluye:
+- Portafolio moderno con animaciones y diseño responsive.
+- Formulario de contacto funcional usando Resend.
+- Configuración fácil por variables de entorno.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tuusuario/tu-repo.git
+   cd tu-repo
+   ```
+2. Instala dependencias:
+   ```bash
+   npm install
+   ```
+
+---
+
+## Configuración de variables de entorno
+
+1. Renombra el archivo `.env.example` a `.env`:
+   ```bash
+   mv .env.example .env
+   ```
+2. Abre `.env` y coloca tus datos:
+   ```env
+   CONTACT_EMAIL=tu-correo@ejemplo.com
+   RESEND_API_KEY=tu_api_key_de_resend
+   ```
+
+- **CONTACT_EMAIL**: Correo donde recibirás los mensajes del formulario.
+- **RESEND_API_KEY**: API key de tu cuenta en [Resend](https://resend.com/).
+
+---
+
+## Cómo funciona el formulario de contacto
+
+- En modo demo (sin dominio verificado en Resend), solo puedes recibir correos en el email con el que creaste la cuenta en Resend.
+- Para enviar a cualquier correo:
+  1. Verifica tu dominio en [Resend](https://resend.com/domains).
+  2. Cambia el campo `from` en `src/app/actions.ts` por un correo de tu dominio verificado.
+
+Ejemplo:
+```js
+from: "no-reply@tudominio.com"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Personalización de redes sociales
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Edita los links de redes sociales en `src/lib/data.ts` en el objeto `socialLinks`.
+- Solo cambia las URLs por las tuyas.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Despliegue
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Puedes desplegar en Vercel, Netlify, o cualquier hosting compatible con Next.js.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Recomendaciones para venta
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Incluye capturas de pantalla y una demo pública.
+- Documenta cualquier personalización extra en este README.
+- El comprador solo debe editar `.env` y los links en `src/lib/data.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Soporte
+
+Para dudas técnicas, consulta la documentación oficial de Next.js y Resend.
+
+---
+
+¡Listo para vender y entregar!

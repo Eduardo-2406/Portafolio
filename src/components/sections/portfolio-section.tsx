@@ -57,9 +57,9 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
 
   return (
     <Card className="overflow-hidden border-foreground/10 bg-card/95 shadow-sm">
-      {projectImage && (
+        {projectImage && (
         <motion.div
-          className="relative w-full aspect-[4/3] overflow-hidden bg-muted"
+          className="relative w-full aspect-[4/3] overflow-hidden bg-[#CED7DE] dark:bg-[#141926]"
           whileInView={isMobileTablet ? { y: 0, opacity: 1 } : undefined}
           initial={isMobileTablet ? { y: 24, opacity: 0 } : undefined}
           viewport={isMobileTablet ? { once: true, amount: 0.35 } : undefined}
@@ -282,11 +282,10 @@ const SplitViewCard = React.memo(function SplitViewCard({
     >
       {/* Columna izquierda - Imagen fija (sale desde abajo). Aplicar fade-in igual que footer-desktop */}
       <motion.div
-        className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-foreground/10 p-2"
+        className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-foreground/10 p-2 bg-[#CED7DE] dark:bg-[#141926]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.35, ease }}
-        style={{ backgroundColor: '#141926' }}
       >
         {projectImage && (
           <motion.div className="relative w-full h-full overflow-hidden" variants={imageVariants}>
