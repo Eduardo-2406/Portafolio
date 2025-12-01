@@ -3,9 +3,11 @@
 import { useState, useCallback, memo, useEffect, useRef, lazy, Suspense } from 'react';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { AboutSection } from '@/components/sections/about-section';
-import { PortfolioSection } from '@/components/sections/portfolio-section';
-import { SkillsSection } from '@/components/sections/skills-section';
-import { ContactSection } from '@/components/sections/contact-section';
+import dynamic from 'next/dynamic';
+
+const PortfolioSection = dynamic(() => import('@/components/sections/portfolio-section').then(mod => mod.PortfolioSection));
+const SkillsSection = dynamic(() => import('@/components/sections/skills-section').then(mod => mod.SkillsSection));
+const ContactSection = dynamic(() => import('@/components/sections/contact-section').then(mod => mod.ContactSection));
 import { DesktopHeader } from '@/components/layout/desktop-header';
 import type { NavItem } from '@/lib/nav-links';
 import { socialLinks, type SocialPlatform } from '@/lib/data';
