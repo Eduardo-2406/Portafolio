@@ -13,7 +13,7 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
-  display: 'optional', // Better for performance, avoids FOIT/FOUT
+  display: 'swap', // Better for LCP, ensures text is visible immediately
   preload: true,
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
   adjustFontFallback: true,

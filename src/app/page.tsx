@@ -69,15 +69,15 @@ const ANIMATION_TIMING = {
   // Salida del contenido: rápido para que desaparezca antes de que los marcos lleguen al centro.
   CONTENT_EXIT_DURATION: 0.45,
   // Retardo antes de que el contenido vuelva a aparecer (debe coincidir con el retorno de marcos)
-  CONTENT_ENTER_DELAY: 0.9,
+  CONTENT_ENTER_DELAY: 0.2, // REDUCED from 0.9
   // Duración de entrada del contenido
-  CONTENT_ENTER_DURATION: 0.6,
+  CONTENT_ENTER_DURATION: 0.4, // REDUCED from 0.6
   // Tiempo total de la transición (en ms). Debe cubrir: fade-out -> marcos al centro/cruce -> marcos regreso -> fade-in inicio
-  TOTAL_TRANSITION_MS: 1400,
+  TOTAL_TRANSITION_MS: 1000, // REDUCED from 1400
   // Delays de contenido inicial
-  SOCIAL_ICONS_DELAY: 5.5,
-  SCROLL_INDICATOR_DELAY_ABOUT: 7.5,
-  SCROLL_INDICATOR_DELAY_MOBILE: 6,
+  SOCIAL_ICONS_DELAY: 1.5, // REDUCED from 5.5
+  SCROLL_INDICATOR_DELAY_ABOUT: 2.5, // REDUCED from 7.5
+  SCROLL_INDICATOR_DELAY_MOBILE: 2, // REDUCED from 6
   // Easing curves (cubic-bezier)
   EASE_OUT_EXPO: [0.76, 0, 0.24, 1],
   EASE_OUT_BACK: [0.34, 1.56, 0.64, 1],

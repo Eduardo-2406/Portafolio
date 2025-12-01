@@ -29,11 +29,11 @@ const AnimatedHeading = memo(function AnimatedHeading({
       <div style={{ minHeight: '120px' }} className="flex items-center justify-center">
         <motion.div
           className="relative"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 1, scale: 1 }} // LCP OPTIMIZATION: Start visible
+          animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
           transition={{ 
-            duration: 0.8, 
-            delay: 0.3,
+            duration: 0.5, 
+            delay: 0, // No delay for container
             ease: [0.22, 1, 0.36, 1]
           }}
         >
@@ -50,11 +50,11 @@ const AnimatedHeading = memo(function AnimatedHeading({
                 <motion.span
                   key={i}
                   className="inline-block"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={contentCanAnimate && shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 10 }} // Reduced movement
+                  animate={{ opacity: 1, y: 0 }} // Always animate to visible
                   transition={{
-                    duration: shouldAnimate ? 0.5 : 0,
-                    delay: shouldAnimate ? 0.5 + i * 0.05 : 0,
+                    duration: 0.3,
+                    delay: 0.1 + i * 0.03, // Faster stagger
                     ease: [0.22, 1, 0.36, 1]
                   }}
                 >
@@ -67,11 +67,11 @@ const AnimatedHeading = memo(function AnimatedHeading({
                 <motion.span
                   key={i}
                   className="inline-block"
-                  initial={{ opacity: 0, y: 20, rotateX: -90 }}
-                  animate={contentCanAnimate && shouldAnimate ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 1, y: 0, rotateX: 0 }}
+                  initial={{ opacity: 0, y: 10, rotateX: -45 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
                   transition={{
-                    duration: shouldAnimate ? 0.6 : 0,
-                    delay: shouldAnimate ? 1.0 + i * 0.08 : 0,
+                    duration: 0.4,
+                    delay: 0.4 + i * 0.05, // Faster stagger
                     ease: [0.34, 1.56, 0.64, 1]
                   }}
                 >
