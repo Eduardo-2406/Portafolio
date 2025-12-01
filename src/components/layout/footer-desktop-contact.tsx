@@ -51,7 +51,7 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.8, ease }}
             >
-              Desarrollador Frontend Jr. creando experiencias web modernas.
+              Frontend Developer creating modern web experiences.
             </motion.p>
           </motion.div>
 
@@ -63,7 +63,7 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.95, ease }}
             >
-              Conecta Conmigo
+              Connect With Me
             </motion.h4>
 
             <motion.ul
@@ -92,7 +92,7 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
           transition={{ duration: 0.6, delay: 1.3, ease }}
         >
           <p className="text-xs xl:text-sm text-muted-foreground">© {CURRENT_YEAR} Eduardo R.</p>
-          <p className="text-xs xl:text-sm text-muted-foreground leading-relaxed">Desarrollado con Next.js, React y Tailwind CSS</p>
+          <p className="text-xs xl:text-sm text-muted-foreground leading-relaxed">Developed with Next.js, React, and Tailwind CSS</p>
         </motion.div>
       </div>
     </motion.aside>

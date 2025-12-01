@@ -1,34 +1,89 @@
 "use client";
 
-import { ReactNode, useEffect, useState, useRef } from 'react';
+import { ReactNode, useEffect, useState, useRef, useCallback, memo } from 'react';
 import { cubicBezier } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TypingAnimation } from '@/registry/magicui/typing-animation';
-import { SignatureEduardo } from '@/components/ui/signature-eduardo';
 
-import { useCallback, memo } from 'react';
-
-const AnimatedHeading = memo(function AnimatedHeading({ contentCanAnimate = true, shouldAnimate = true }: { contentCanAnimate?: boolean; shouldAnimate?: boolean }) {
-  const title = "Hey, Soy Eduardo";
-  const subtitle = "Desarrollador Frontend Jr.";
+const AnimatedHeading = memo(function AnimatedHeading({ 
+  contentCanAnimate = true, 
+  shouldAnimate = true 
+}: { 
+  contentCanAnimate?: boolean; 
+  shouldAnimate?: boolean;
+}) {
+  // CUSTOMIZATION: Change these values to personalize your portfolio
+  const name = "Eduardo";  // Your name
+  const title = "Frontend Developer";  // Your job title
+  
   const [showTyping, setShowTyping] = useState(shouldAnimate);
-
   const handleTypingDone = useCallback(() => setShowTyping(false), []);
 
   return (
     <div className="text-center">
-      <h1 className="sr-only" aria-label={`${title} ${subtitle}`}>
-        {title}
+      <h1 className="sr-only" aria-label={`Hey, I'm ${name} - ${title}`}>
+        Hey, I&apos;m {name}
       </h1>
+      
+      {/* Animated Name */}
       <div style={{ minHeight: '120px' }} className="flex items-center justify-center">
-        {contentCanAnimate && (
-          shouldAnimate ? (
-            <SignatureEduardo startDelay={800} key="signature-animate" />
-          ) : (
-            <SignatureEduardo startDelay={0} skipAnimation key="signature-static" />
-          )
-        )}
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+          transition={{ 
+            duration: 0.8, 
+            delay: 0.3,
+            ease: [0.22, 1, 0.36, 1]
+          }}
+        >
+          <h2 
+            className="font-headline font-bold text-foreground"
+            style={{ 
+              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            {/* Animated letters */}
+            <span className="inline-block">
+              {"Hey, I'm ".split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={contentCanAnimate && shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                  transition={{
+                    duration: shouldAnimate ? 0.5 : 0,
+                    delay: shouldAnimate ? 0.5 + i * 0.05 : 0,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+            </span>
+            <span className="inline-block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+              {name.split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  initial={{ opacity: 0, y: 20, rotateX: -90 }}
+                  animate={contentCanAnimate && shouldAnimate ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{
+                    duration: shouldAnimate ? 0.6 : 0,
+                    delay: shouldAnimate ? 1.0 + i * 0.08 : 0,
+                    ease: [0.34, 1.56, 0.64, 1]
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+          </h2>
+        </motion.div>
       </div>
+
+      {/* Subtitle with typing animation */}
       <div className="mt-1" style={{ minHeight: '3rem' }}>
         <span
           style={{ fontSize: 'clamp(1.25rem, 4vw, 2rem)' }}
@@ -42,10 +97,10 @@ const AnimatedHeading = memo(function AnimatedHeading({ contentCanAnimate = true
               showCursorDelayMs={2500}
               onDone={handleTypingDone}
             >
-              {subtitle}
+              {title}
             </TypingAnimation>
           ) : (
-            subtitle
+            title
           )}
         </span>
       </div>
@@ -63,7 +118,8 @@ type AboutSectionProps = {
   contentCanAnimate?: boolean;
 };
 
-const description = "Me gusta construir soluciones digitales que tengan sentido desde la base. Me interesa la etapa previa al código, ordenar ideas, definir la arquitectura, analizar pros y contras y pensar en soluciones claras antes de mover una sola línea. El objetivo es que lo que ves en pantalla se sienta fluido, útil y respaldado por una estructura sólida.";
+// CUSTOMIZATION: Update this description to match your profile
+const description = "I love building digital solutions that make sense from the ground up. I'm interested in the stage before code: organizing ideas, defining architecture, analyzing pros and cons, and thinking of clear solutions before moving a single line. The goal is for what you see on screen to feel fluid, useful, and backed by a solid structure.";
 
 const easeCurve = cubicBezier(0.22, 1, 0.36, 1);
 const headingMotion = {

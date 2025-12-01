@@ -99,7 +99,7 @@ export const DesktopHeader = memo(function DesktopHeader({
         <nav 
           className="relative flex justify-center items-center gap-1 bg-foreground/5 dark:bg-card/70 px-2 py-1.5 rounded-2xl border border-border/40 w-[580px]"
           role="navigation"
-          aria-label="Navegación principal"
+          aria-label="Main navigation"
         >
           {navItems.map((item, index) => (
             <button
@@ -119,7 +119,7 @@ export const DesktopHeader = memo(function DesktopHeader({
             </button>
           ))}
           
-          {/* Indicador animado - solo renderizar cuando tenemos medidas */}
+          {/* Animated indicator - only render when we have measurements */}
           {indicatorStyle && (
             <motion.div
               className="absolute bg-card/50 border border-primary/40 shadow-sm rounded-xl pointer-events-none"
@@ -140,7 +140,7 @@ export const DesktopHeader = memo(function DesktopHeader({
           )}
         </nav>
 
-        {/* Toggle de tema */}
+        {/* Theme toggle */}
         <div className="absolute right-4 md:right-6 text-[#5C9993] dark:text-primary">
           <ThemeToggleButton />
         </div>

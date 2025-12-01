@@ -10,16 +10,16 @@ const ease = cubicBezier(0.22, 1, 0.36, 1);
 const entranceEase = cubicBezier(0.25, 0.46, 0.45, 0.94);
 // hoverEase removed: icon hover now uses CSS transform transitions (Tailwind) instead of framer-motion ease
 
-// Categorización de habilidades (constante estática)
+// Skill categorization (static constant)
 const skillCategories: Record<'frontend'|'backend', string[]> = {
   frontend: ['JavaScript', 'React', 'Next.js', 'Tailwind CSS', 'HTML5', 'CSS'],
   backend: ['Node.js', 'Firebase', 'PostgreSQL', 'C#', 'SQL Server'],
 };
 
 const getSkillLevel = (level: number): string => {
-  if (level >= 50) return 'Intermedio';
-  if (level >= 30) return 'Básico+';
-  return 'Básico';
+  if (level >= 50) return 'Intermediate';
+  if (level >= 30) return 'Basic+';
+  return 'Basic';
 };
 
 // helper removed: delays handled per-group via `groupDelay` passed to SkillCard
@@ -57,7 +57,7 @@ const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, 
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div className="relative h-full rounded-lg border border-foreground/10 bg-card/50 p-3">
-        {/* Progress bar en el borde superior */}
+        {/* Top border progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-lg overflow-hidden bg-foreground/5">
           <motion.div
             className="h-full bg-gradient-to-r from-primary via-primary to-primary/70"
@@ -65,18 +65,18 @@ const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, 
           />
         </div>
 
-        {/* No hover beam: solo movimiento del icono en hover */}
+        {/* No hover beam: only icon movement on hover */}
         
         <div className="relative flex flex-col items-center gap-3 text-center group">
-          {/* Icono: animación activada al hacer hover en la card (clase group) */}
+          {/* Icon: animation activated on card hover (group class) */}
           <div className="relative transform transition-transform duration-300 group-hover:-translate-y-1">
             <TechIcon name={name} className="h-9 w-9 text-foreground transition-transform duration-300" />
           </div>
 
-          {/* Nombre de la tecnología y badge: centrados y sin hover que afecte al layout */}
+          {/* Technology name and badge: centered and without hover affecting layout */}
           <div className="space-y-1 text-center py-1">
             <h3 className={`font-semibold text-foreground transition-colors duration-200 ${name === 'Node.js' ? 'text-lg lg:text-xl' : 'text-base'}`}>{name}</h3>
-            <span className={`inline-block px-2 py-0.5 ${levelLabel === 'Básico' ? 'text-sm' : 'text-[10px]'} font-medium rounded-md bg-foreground/5 text-foreground/60`}>{levelLabel}</span>
+            <span className={`inline-block px-2 py-0.5 ${levelLabel === 'Basic' ? 'text-sm' : 'text-[10px]'} font-medium rounded-md bg-foreground/5 text-foreground/60`}>{levelLabel}</span>
           </div>
         </div>
 
@@ -98,7 +98,7 @@ type SkillsSectionProps = {
 };
 
 export const SkillsSection = memo(function SkillsSection({ parentContentVisible }: SkillsSectionProps) {
-  // Organizar skills por categoría (skills es un import estático)
+  // Organize skills by category (skills is a static import)
   const frontendSkills = useMemo(() => skills.filter(skill => skillCategories.frontend.includes(skill.name as string)), []);
   const backendSkills = useMemo(() => skills.filter(skill => skillCategories.backend.includes(skill.name as string)), []);
 
@@ -179,7 +179,7 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
   return (
     <section id="skills" className="w-full h-full flex flex-col items-center justify-center pt-8 pb-32 sm:pt-12 sm:pb-32 md:pt-16 md:pb-32 lg:pt-16 lg:pb-32 scroll-mt-16">
       <div className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-        {/* Título principal */}
+        {/* Main Title */}
         <motion.div className="flex flex-col items-center justify-center space-y-1 text-center mb-12 sm:mb-16 max-w-4xl mx-auto">
           <motion.div style={{ overflow: 'hidden' }}>
             <motion.h2
@@ -191,7 +191,7 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
               whileInView={isMobile ? { y: 0, opacity: 1 } : undefined}
               viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
             >
-              Habilidades
+              Skills
             </motion.h2>
           </motion.div>
         </motion.div>
@@ -212,7 +212,7 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
                     Frontend Development
                   </motion.div>
                   <motion.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.06, ease }}>
-                    Diseño y desarrollo de interfaces de usuario
+                    UI Design and Development
                   </motion.div>
                 </motion.div>
             </div>
@@ -242,7 +242,7 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
                   whileInView={isMobile ? 'visible' : undefined}
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
                 >
-                  Servidores, APIs y gestión de datos
+                  Servers, APIs, and Data Management
                 </motion.div>
               </motion.div>
             </div>

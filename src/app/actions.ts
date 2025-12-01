@@ -1,3 +1,34 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * CONTACT FORM SERVER ACTION
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 
+ * This file handles the contact form submission using Resend email service.
+ * 
+ * SETUP INSTRUCTIONS:
+ * 
+ * 1. Get a Resend API Key:
+ *    - Go to https://resend.com and sign up (free tier available)
+ *    - Create an API key in your dashboard
+ *    - Copy the API key (starts with 're_')
+ * 
+ * 2. Configure Environment Variables:
+ *    - Create a .env.local file in the root directory
+ *    - Add the following variables:
+ *      RESEND_API_KEY=re_your_api_key_here
+ *      CONTACT_EMAIL=your-email@example.com
+ * 
+ * 3. For Production (Vercel):
+ *    - Go to your Vercel project settings
+ *    - Navigate to "Environment Variables"
+ *    - Add both RESEND_API_KEY and CONTACT_EMAIL
+ *    - Redeploy your project
+ * 
+ * IMPORTANT:
+ * - Replace CONTACT_EMAIL with YOUR email address where you want to receive messages
+ * - The free tier of Resend allows 100 emails/day, 3,000/month
+ * - Test the form after deployment to ensure it works
+ */
 
 "use server";
 
@@ -6,9 +37,9 @@ import { Resend } from "resend";
 import { logger } from '@/lib/logger';
 
 const contactSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Por favor, introduce un correo electrónico válido."),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres."),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  message: z.string().min(10, "Message must be at least 10 characters."),
 });
 
 export type ContactFormState = {
@@ -21,7 +52,9 @@ export type ContactFormState = {
   message?: string;
 };
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend with your API key from environment variables
+// If API key is missing, resend will be null and we'll show a friendly error message
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function submitContactForm(
   prevState: ContactFormState | null,
@@ -37,7 +70,7 @@ export async function submitContactForm(
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Error de validación.",
+      message: "Validation error.",
     };
   }
 
@@ -45,7 +78,15 @@ export async function submitContactForm(
   if (!to) {
     return {
       success: false,
-      message: "No se encontró CONTACT_EMAIL en .env. Por favor, configúralo.",
+      message: "CONTACT_EMAIL not found in .env. Please configure it.",
+    };
+  }
+
+  // Check if Resend is configured
+  if (!resend) {
+    return {
+      success: false,
+      message: "RESEND_API_KEY not found in .env. Please configure it to enable the contact form.",
     };
   }
 
@@ -56,8 +97,8 @@ export async function submitContactForm(
     const resp: unknown = await resend.emails.send({
       from: "no-reply@resend.dev",
       to,
-      subject: "Nuevo mensaje desde tu portafolio",
-      text: `Nombre: ${validatedFields.data.name}\nEmail: ${validatedFields.data.email}\nMensaje: ${validatedFields.data.message}`,
+      subject: "New message from your portfolio",
+      text: `Name: ${validatedFields.data.name}\nEmail: ${validatedFields.data.email}\nMessage: ${validatedFields.data.message}`,
     });
 
     logger.info('Resend response:', resp);
@@ -72,14 +113,14 @@ export async function submitContactForm(
 
     return {
       success: true,
-      message: respId ? `¡Mensaje enviado! id: ${respId}` : '¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.',
+      message: respId ? `Message sent! id: ${respId}` : 'Thanks for your message! I will get back to you soon.',
     };
   } catch (error) {
     // Log full error for debugging
     logger.error('Resend send error:', error instanceof Error ? error.message : error);
     return {
       success: false,
-      message: `Algo salió mal al enviar el correo. ${(error instanceof Error) ? error.message : ''}`,
+      message: `Something went wrong sending the email. ${(error instanceof Error) ? error.message : ''}`,
     };
   }
 }

@@ -38,7 +38,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
 
     if (state.success) {
       const animationTimer = window.setTimeout(() => {
-        toast({ title: 'Éxito', description: state.message || '¡Gracias por tu mensaje!', duration: 3000 });
+        toast({ title: 'Success', description: state.message || 'Thank you for your message!', duration: 3000 });
         setFormValues({ name: '', email: '', message: '' });
         setIsAnimating(false);
       }, 3000);
@@ -65,45 +65,45 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
   }, [state, toast]);
 
   const handleValidateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // Validar campos antes de activar la animación
+    // Validate fields before triggering animation
     const name = formValues.name.trim();
     const email = formValues.email.trim();
     const message = formValues.message.trim();
     const errors: typeof clientErrors = {};
 
-    // Validación de nombre
+    // Name validation
     if (!name) {
-      errors.name = ['El nombre es requerido'];
+      errors.name = ['Name is required'];
     } else if (name.length < 2) {
-      errors.name = ['El nombre debe tener al menos 2 caracteres'];
+      errors.name = ['Name must be at least 2 characters'];
     }
 
-    // Validación de email
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      errors.email = ['El email es requerido'];
+      errors.email = ['Email is required'];
     } else if (!emailRegex.test(email)) {
-      errors.email = ['Por favor ingresa un email válido'];
+      errors.email = ['Please enter a valid email'];
     }
 
-    // Validación de mensaje
+    // Message validation
     if (!message) {
-      errors.message = ['El mensaje es requerido'];
+      errors.message = ['Message is required'];
     } else if (message.length < 10) {
-      errors.message = ['El mensaje debe tener al menos 10 caracteres'];
+      errors.message = ['Message must be at least 10 characters'];
     }
 
-    // Si hay errores, mostrarlos y no enviar el formulario
-      if (Object.keys(errors).length > 0) {
-        e.preventDefault();
-        setClientErrors(errors);
-        if (errors.name) nameRef.current?.focus();
-        else if (errors.email) emailRef.current?.focus();
-        else if (errors.message) messageRef.current?.focus();
-        return;
-      }
+    // If errors exist, show them and prevent submission
+    if (Object.keys(errors).length > 0) {
+      e.preventDefault();
+      setClientErrors(errors);
+      if (errors.name) nameRef.current?.focus();
+      else if (errors.email) emailRef.current?.focus();
+      else if (errors.message) messageRef.current?.focus();
+      return;
+    }
 
-    // Limpiar errores del cliente si todo está bien
+    // Clear client errors if everything is valid
     setClientErrors({});
     setIsAnimating(true);
   };
@@ -149,7 +149,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
             paddingTop: 'clamp(0.3rem, 0.8vh, 0.75rem)',
           }}
         >
-          {/* Nombre */}
+          {/* Name */}
           <motion.div layoutId="name-field" layout="position" className="space-y-2">
             <motion.div
               style={{ overflow: 'hidden' }}
@@ -159,11 +159,11 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
               transition={isMobile ? { duration: 0.45, delay: baseDelay + 0 * 0.12, ease: entranceEase } : getFieldTransition(0.18)}
             >
-              <Label htmlFor="name" className="mb-1 block font-semibold text-foreground whitespace-nowrap flex items-center gap-2" style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)' }}>
+              <Label htmlFor="name" className="mb-1 font-semibold text-foreground whitespace-nowrap flex items-center gap-2" style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)' }}>
                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                Nombre
+                Name
               </Label>
             </motion.div>
 
@@ -178,7 +178,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               <Input
                 id="name"
                 name="name"
-                placeholder="Tu nombre"
+                placeholder="Your name"
                 required
                 ref={nameRef}
                 value={formValues.name}
@@ -187,7 +187,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                 style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.15rem)', paddingInline: 'clamp(1rem, 2.2vw, 1.5rem)', paddingBlock: 'clamp(1.1rem, 2.5vh, 1.6rem)' }}
               />
               <p className={`${(clientErrors.name || state.errors?.name) && (clientErrors.name?.length || state.errors?.name?.length) ? 'text-red-400 visible font-medium' : 'invisible'}`} style={{ marginTop: 'clamp(0.35rem, 0.8vh, 0.6rem)', fontSize: 'clamp(0.8rem, 1vw, 0.9rem)' }}>
-                {clientErrors.name?.[0] || state.errors?.name?.[0] || 'Nombre inválido'}
+                {clientErrors.name?.[0] || state.errors?.name?.[0] || 'Invalid name'}
               </p>
             </motion.div>
           </motion.div>
@@ -208,7 +208,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
             >
               <Label
                 htmlFor="email"
-                className="mb-1 block font-semibold text-foreground whitespace-nowrap flex items-center gap-2"
+                className="mb-1 font-semibold text-foreground whitespace-nowrap flex items-center gap-2"
                 style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)' }}
               >
                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +230,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                 id="email"
                 name="email"
                 type="email"
-                placeholder="tu@email.com"
+                placeholder="you@email.com"
                 required
                 ref={emailRef}
                 value={formValues.email}
@@ -253,12 +253,12 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                   fontSize: 'clamp(0.8rem, 1vw, 0.9rem)',
                 }}
               >
-                {clientErrors.email?.[0] || state.errors?.email?.[0] || 'Email inválido'}
+                {clientErrors.email?.[0] || state.errors?.email?.[0] || 'Invalid email'}
               </p>
             </motion.div>
           </motion.div>
 
-          {/* Mensaje */}
+          {/* Message */}
           <motion.div
             layoutId="message-field"
             layout="position"
@@ -274,13 +274,13 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
             >
               <Label
                 htmlFor="message"
-                className="mb-1 block font-semibold text-foreground whitespace-nowrap flex items-center gap-2"
+                className="mb-1 font-semibold text-foreground whitespace-nowrap flex items-center gap-2"
                 style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)' }}
               >
                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
-                Mensaje
+                Message
               </Label>
             </motion.div>
 
@@ -295,7 +295,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               <Textarea
                 id="message"
                 name="message"
-                placeholder="¿En qué puedo ayudarte?"
+                placeholder="How can I help you?"
                 required
                 ref={messageRef}
                 value={formValues.message}
@@ -320,12 +320,12 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                   fontSize: 'clamp(0.8rem, 1vw, 0.9rem)',
                 }}
               >
-                {clientErrors.message?.[0] || state.errors?.message?.[0] || 'Mensaje inválido'}
+                {clientErrors.message?.[0] || state.errors?.message?.[0] || 'Invalid message'}
               </p>
             </motion.div>
           </motion.div>
 
-          {/* Botón */}
+          {/* Button */}
           <motion.div
             layoutId="send-button"
             layout="position"
@@ -369,7 +369,7 @@ export const ContactSection = memo(function ContactSection({ isCompact = false, 
   return (
     <motion.section layout transition={{ layout: { type: 'spring', stiffness: 220, damping: 26, mass: 0.9 } }} id="contact" className={sectionClass}>
       <motion.div layout className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-        {/* Título */}
+        {/* Title */}
         <motion.div layout className={`${footerVisible ? 'mb-6' : 'mb-8 sm:mb-12'} space-y-2 text-center`}>
           <motion.div style={{ overflow: 'hidden' }}>
             <motion.h2
@@ -379,12 +379,12 @@ export const ContactSection = memo(function ContactSection({ isCompact = false, 
               animate={parentContentVisible ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.08, ease: easeCurve }}
             >
-              Contáctame
+              Contact Me
             </motion.h2>
           </motion.div>
         </motion.div>
 
-        {/* Layout principal */}
+        {/* Main Layout */}
         <div className="max-w-2xl mx-auto">
           <motion.div
             className="relative rounded-xl border border-foreground/10 bg-card/30 p-6 lg:p-8 shadow-sm"

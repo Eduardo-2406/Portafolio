@@ -6,29 +6,29 @@ import { Toaster } from '@/components/ui/toaster';
 import { ErrorBoundary } from '@/components/error-boundary';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CONFIGURACIÓN DE FUENTES
+// FONT CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
-  display: 'optional', // Mejor para performance, evita FOIT/FOUT
+  display: 'optional', // Better for performance, avoids FOIT/FOUT
   preload: true,
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
   adjustFontFallback: true,
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// METADATA Y SEO
+// METADATA & SEO
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const siteConfig = {
-  name: 'Portafolio',
-  description: 'Un portafolio de desarrollador moderno, creado con Next.js y Tailwind CSS.',
-  url: 'https://tu-dominio.com',
+  name: 'Portfolio',
+  description: 'A modern developer portfolio, built with Next.js and Tailwind CSS.',
+  url: 'https://your-domain.com',
   author: 'Eduardo',
-  locale: 'es_ES',
+  locale: 'en_US',
 } as const;
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['portafolio', 'desarrollador', 'frontend', 'React', 'Next.js', 'TypeScript'],
+  keywords: ['portfolio', 'developer', 'frontend', 'React', 'Next.js', 'TypeScript'],
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
   openGraph: {
@@ -78,13 +78,13 @@ export const viewport: Viewport = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SCRIPTS DE INICIALIZACIÓN (evitan FOUC y configuran escala fluida)
+// INITIALIZATION SCRIPTS (prevent FOUC and configure fluid scale)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Script combinado que se ejecuta antes del render:
- * 1. Aplica el tema guardado para evitar flash de contenido sin estilo (FOUC)
- * 2. Configura la escala fluida del viewport para pantallas grandes
+ * Combined script executed before render:
+ * 1. Applies saved theme to prevent Flash of Unstyled Content (FOUC)
+ * 2. Configures fluid viewport scale for large screens
  */
 const initScript = `(()=>{
 try{
@@ -117,7 +117,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
-      lang="es"
+      lang="en"
       suppressHydrationWarning
       className={spaceGrotesk.variable}
     >

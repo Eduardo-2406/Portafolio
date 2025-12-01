@@ -7,8 +7,8 @@ type SendButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isSubmitting?: boolean;
 };
 
-const lettersDefault = ['E','n','v','i','a','r','\u00A0','M','e','n','s','a','j','e'];
-const lettersSent = ['E','n','v','i','a','d','o'];
+const lettersDefault = ['S','e','n','d','\u00A0','M','e','s','s','a','g','e'];
+const lettersSent = ['S','e','n','t'];
 
 const SendButtonBase = React.forwardRef<HTMLButtonElement, SendButtonProps>(({ isSubmitting = false, className, ...props }, ref) => {
   // precompute spans with CSS variable `--i` to avoid recreating style objects every render

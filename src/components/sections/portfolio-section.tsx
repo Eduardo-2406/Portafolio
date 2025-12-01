@@ -50,7 +50,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
     [project.image],
   );
 
-  // Animaciones progresivas solo para móvil/tablet
+  // Progressive animations only for mobile/tablet
   const isMobileTablet = typeof window !== 'undefined' ? window.innerWidth < 1024 : true;
 
   // motion components are defined at module scope
@@ -129,7 +129,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
                 viewport={{ once: true, amount: 0.35 }}
                 transition={{ duration: 0.45, ease, delay: baseDelay + 0.12 }}
               >
-                Tecnologías
+                Technologies
               </motion.h4>
               <div className="flex flex-wrap gap-1.5 max-w-[22.5rem]">
                 {project.tags.map((tag, idx) => (
@@ -153,7 +153,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
             </>
           ) : (
             <>
-              <h4 className="text-xs sm:text-sm font-semibold text-foreground/90 mb-1.5">Tecnologías</h4>
+              <h4 className="text-xs sm:text-sm font-semibold text-foreground/90 mb-1.5">Technologies</h4>
               <div className="flex flex-wrap gap-1.5 max-w-[22.5rem]">
                 {project.tags.map((tag) => (
                   <Badge
@@ -187,7 +187,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
               }}
             >
-              Ver Demo
+              View Demo
             </CtaButton>
           </motion.div>
         ) : (
@@ -197,7 +197,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
               window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
             }}
           >
-            Ver Demo
+            View Demo
           </CtaButton>
         )}
       </CardFooter>
@@ -280,7 +280,7 @@ const SplitViewCard = React.memo(function SplitViewCard({
       custom={0}
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
-      {/* Columna izquierda - Imagen fija (sale desde abajo). Aplicar fade-in igual que footer-desktop */}
+      {/* Left Column - Fixed Image (slide up). Apply fade-in like footer-desktop */}
       <motion.div
         className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-foreground/10 p-2 bg-[#CED7DE] dark:bg-[#141926]"
         initial={{ opacity: 0 }}
@@ -302,10 +302,10 @@ const SplitViewCard = React.memo(function SplitViewCard({
         )}
       </motion.div>
 
-      {/* Columna derecha - Información con animación orquestada */}
+      {/* Right Column - Information with orchestrated animation */}
       <div className="relative flex flex-col justify-center overflow-hidden">
         <motion.div className="space-y-6" variants={containerVariants} custom={baseDelay}>
-          {/* Título de la card: slide-up */}
+          {/* Card Title: slide-up */}
           <motion.div className="space-y-3" variants={titleVariants}>
             <h3 className="text-4xl lg:text-5xl xl:text-6xl font-bold font-headline text-foreground leading-tight">
               {project.title}
@@ -313,16 +313,16 @@ const SplitViewCard = React.memo(function SplitViewCard({
             <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/50 rounded-full" />
           </motion.div>
 
-          {/* Contenido: título de la card y descripción salen left->right (title primero gracias al stagger) */}
+          {/* Content: card title and description slide left->right (title first thanks to stagger) */}
           <motion.div variants={contentVariants}>
             <motion.p className="text-base lg:text-lg text-muted-foreground leading-relaxed" variants={textLeftVariants}>
               {project.description}
             </motion.p>
           </motion.div>
 
-          {/* Tecnologías: badges con stagger */}
+          {/* Technologies: badges with stagger */}
           <motion.div className="space-y-3" variants={contentVariants}>
-            <h4 className="text-sm font-semibold text-foreground/70 uppercase tracking-wider">Tecnologías</h4>
+            <h4 className="text-sm font-semibold text-foreground/70 uppercase tracking-wider">Technologies</h4>
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
                 <motion.div key={tag} variants={badgeVariants}>
@@ -338,7 +338,7 @@ const SplitViewCard = React.memo(function SplitViewCard({
             </div>
           </motion.div>
 
-          {/* Botón CTA */}
+          {/* CTA Button */}
           <motion.div className="pt-4" variants={textLeftVariants}>
             <CtaButton
               className="text-primary text-base"
@@ -346,7 +346,7 @@ const SplitViewCard = React.memo(function SplitViewCard({
                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
               }}
             >
-              Ver Demo
+              View Demo
             </CtaButton>
           </motion.div>
         </motion.div>
@@ -369,7 +369,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
   const animMs = 300;
 
   const safeStep = useCallback((dir: 1 | -1) => {
-    if (isMobile) return; // En móvil/tablet no usamos navegación de stack
+    if (isMobile) return; // In mobile/tablet we don't use stack navigation
     if (animatingRef.current) return;
     animatingRef.current = true;
 
@@ -386,7 +386,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
   }, [animMs, isMobile, maxIdx]);
 
   useEffect(() => {
-    if (isMobile) return; // En móvil no bloqueamos navegación global ni usamos teclado
+    if (isMobile) return; // In mobile we don't block global navigation nor use keyboard
     setBlockNavigation?.(true);
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp') { e.preventDefault(); safeStep(-1); }
@@ -399,13 +399,13 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
     };
   }, [isMobile, safeStep, setBlockNavigation]);
 
-  // Capturar rueda SOLO en desktop real (>=1280px); en móvil/tablet NO interferir
+  // Capture wheel ONLY on real desktop (>=1280px); do NOT interfere on mobile/tablet
   useEffect(() => {
-    // Doble verificación: hook + media query en tiempo real
+    // Double check: hook + media query in real time
     if (isMobile) return;
     
     const mediaQuery = window.matchMedia('(min-width: 1280px)');
-    if (!mediaQuery.matches) return; // Extra seguridad para tablets
+    if (!mediaQuery.matches) return; // Extra safety for tablets
     
     const el = sectionRef.current;
     if (!el) return;
@@ -423,7 +423,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
   useEffect(() => {
     if (handoffDir === null) return;
     const nextIndex = (currentSection ?? 1) + handoffDir;
-    // Asegurar que la navegación ocurra post-render para evitar warnings
+    // Ensure navigation happens post-render to avoid warnings
     requestAnimationFrame(() => {
       navigate?.(nextIndex);
       setHandoffDir(null);
@@ -446,7 +446,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
 
   return (
     <section ref={sectionRef} id="portfolio" className={sectionClass}>
-      <div className="w-full px-4 sm:px-8 md:px-8 ipadpro:px-16 lg:px-12 xl:px-16 2xl:px-20">
+      <div className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         <motion.div className="flex flex-col items-center justify-center space-y-1 text-center mb-8 sm:mb-10 max-w-6xl mx-auto ipadpro:max-w-7xl" initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease }}>
           <motion.div style={{ overflow: 'hidden' }}>
             <motion.h2
@@ -458,12 +458,12 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
               viewport={!parentVisible ? { once: true, amount: 0.35 } : undefined}
               transition={getFieldTransition(0, 0.45, baseDelay)}
             >
-              Proyectos
+              Projects
             </motion.h2>
           </motion.div>
         </motion.div>
 
-        {/* Layout responsive: lista vertical en móvil/tablet, stack con parallax en desktop */}
+        {/* Responsive Layout: vertical list on mobile/tablet, stack with parallax on desktop */}
         {isMobile ? (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 ipadpro:grid-cols-2 gap-6 max-w-6xl mx-auto ipadpro:max-w-7xl">
             {visibleProjects.map((project, idx) => (
@@ -473,10 +473,10 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
             ))}
           </div>
         ) : (
-          // Desktop: Split View con navegación vertical
+          // Desktop: Split View with vertical navigation
           <div className="relative w-full max-w-7xl mx-auto">
             <div className="relative" style={{ height: 'clamp(420px, 55vh, 550px)' }}>
-              {/* Contenedor principal */}
+              {/* Main Container */}
               <div className="h-full">
                 {visibleProjects.map((project, i) => (
                   <div
@@ -493,9 +493,9 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
                 ))}
               </div>
 
-              {/* Navegación con flechas verticales a la derecha */}
+              {/* Navigation with vertical arrows on the right */}
               <div className="absolute -right-16 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-20">
-                {/* Botón anterior */}
+                {/* Previous Button */}
                 <button
                   type="button"
                   onClick={() => safeStep(-1)}
@@ -508,7 +508,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
                   </svg>
                 </button>
 
-                {/* Indicadores de proyecto */}
+                {/* Project Indicators */}
                 <div className="flex flex-col gap-2 py-2">
                   {visibleProjects.map((_, i) => (
                     <button key={i} onClick={() => handleIndicatorClick(i)} className="group relative" aria-label={`Ir al proyecto ${i + 1}`}>
@@ -517,7 +517,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
                   ))}
                 </div>
 
-                {/* Botón siguiente */}
+                {/* Next Button */}
                 <button
                   type="button"
                   onClick={() => safeStep(1)}
@@ -531,7 +531,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
                 </button>
               </div>
 
-              {/* Número de proyecto en la esquina inferior izquierda */}
+              {/* Project Number in bottom left corner */}
               <motion.div
                 className="absolute bottom-0 left-0 text-8xl font-bold text-foreground/5 select-none"
                 key={activeIdx}

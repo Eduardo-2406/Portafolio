@@ -6,23 +6,23 @@
   /* HTML & Scroll */
   html {
     overflow-x: hidden;
-    /* Ocultar barras de scroll en navegadores modernos */
+    /* Hide scrollbars in modern browsers */
     scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE y Edge Legacy */
+    -ms-overflow-style: none; /* IE and Edge Legacy */
   }
 
   html::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
 
-  /* Desktop: sin scroll-behavior (navegación por secciones) */
+  /* Desktop: no scroll-behavior (section navigation) */
   @media (min-width: 1280px) {
     html {
       scroll-behavior: auto;
     }
   }
 
-  /* Móviles/tablets: scroll nativo suave y asegurar comportamiento táctil */
+  /* Mobile/Tablets: smooth native scroll and ensure touch behavior */
   @media (max-width: 1279px) {
     html {
       scroll-behavior: smooth;
@@ -37,40 +37,40 @@
       overflow-x: hidden;
       height: auto;
       min-height: 100%;
-      position: relative; /* Asegurar contexto de apilamiento */
+      position: relative; /* Ensure stacking context */
     }
   }
 
-  /* CSS Variables - Light Theme (basado en #111827, #626c7d, #599692, #dfe5ec) */
+  /* CSS Variables - Light Theme (based on #111827, #626c7d, #599692, #dfe5ec) */
   :root {
-    /* Usamos como fondo principal un gris-azulado claro #dfe5ec para mantener un modo claro usable */
+    /* Main background: light blue-grey #dfe5ec for a usable light mode */
     --background: 216 23% 89%; /* #DFE5EC */
-    /* Títulos y texto fuerte: un azul muy oscuro cercano a #111827 */
-    --foreground: 222 47% 16%; /* aprox #111827 */
-    /* Cards: ligeramente más claras que el fondo */
+    /* Headings and strong text: very dark blue close to #111827 */
+    --foreground: 222 47% 16%; /* approx #111827 */
+    /* Cards: slightly lighter than background */
     --card: 216 23% 96%;
     --card-foreground: 222 47% 16%;
     --popover: 216 23% 96%;
     --popover-foreground: 222 47% 16%;
-    /* Acento primario: verde pastel #599692 */
+    /* Primary accent: pastel green #599692 */
     --primary: 174 25% 48%;
     --primary-foreground: 210 40% 98%;
-    /* Acento secundario: tono más claro del mismo verde */
+    /* Secondary accent: lighter shade of the same green */
     --secondary: 174 25% 60%;
     --secondary-foreground: 222 47% 16%;
-    /* Texto secundario: mismo color que el texto principal para unificar todo el copy */
+    /* Muted text: same color as main text to unify copy */
     --muted: 216 23% 94%;
     --muted-foreground: 222 47% 16%;
-    /* Accent por defecto: verde pastel */
+    /* Default accent: pastel green */
     --accent: 174 25% 48%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
-    /* Bordes / separadores: gris suave cercano a #cbd5e1 */
+    /* Borders / separators: soft grey close to #cbd5e1 */
     --border: 214 32% 85%;
     --input: 214 32% 85%;
     --ring: 174 25% 48%;
-    /* Valores de chart y sidebar */
+    /* Chart and sidebar values */
     --chart-1: 174 25% 48%;
     --chart-2: 219 12% 43%;
     --chart-3: 222 47% 16%;
@@ -86,33 +86,33 @@
     --sidebar-ring: 174 25% 48%;
   }
 
-  /* CSS Variables - Dark Theme (basado en #0d0f12, #c7cacc, #c91b68, #809fff) */
+  /* CSS Variables - Dark Theme (based on #0d0f12, #c7cacc, #c91b68, #809fff) */
   .dark {
-    /* Fondo principal oscuro: #0d0f12 */
+    /* Main dark background: #0d0f12 */
     --background: 222 19% 6%;
-    /* Texto principal y secundario: gris medio-claro #c7cacc */
+    /* Main and secondary text: medium-light grey #c7cacc */
     --foreground: 210 6% 79%;
-    --muted-foreground: 210 6% 79%; /* igual a --foreground */
-    /* Cards: un poco más claras que el fondo, usando #111827 como surface elevada */
-    --card: 222 31% 13%; /* aprox #111827 */
+    --muted-foreground: 210 6% 79%; /* same as --foreground */
+    /* Cards: slightly lighter than background, using #111827 as elevated surface */
+    --card: 222 31% 13%; /* approx #111827 */
     --card-foreground: 210 6% 79%;
     --popover: 222 31% 13%;
     --popover-foreground: 210 6% 79%;
-    /* Acento primario: verde pastel #599692 (mismo tono que en tema claro) */
+    /* Primary accent: pastel green #599692 (same tone as light theme) */
     --primary: 174 25% 48%; /* ≈ #599692 */
     --primary-foreground: 222 19% 6%;
-    /* Acento secundario / hover: variante más clara del mismo verde */
+    /* Secondary accent / hover: lighter variant of the same green */
     --secondary: 174 25% 60%;
     --secondary-foreground: 222 19% 6%;
-    /* Texto secundario: mismo color de texto para unificar todo el copy */
+    /* Muted text: same text color to unify copy */
     --muted: 222 24% 16%;
     --muted-foreground: 210 6% 79%;
-    /* Accent por defecto: mismo verde primario */
+    /* Default accent: same primary green */
     --accent: 174 25% 48%;
     --accent-foreground: 222 19% 6%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
-    /* Bordes / inputs oscuros derivados del fondo */
+    /* Dark borders / inputs derived from background */
     --border: 222 24% 16%;
     --input: 222 24% 16%;
     --ring: 174 25% 48%;
@@ -129,7 +129,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     color: hsl(var(--foreground));
-    /* Fondo claro basado en #dfe5ec con efecto suave tipo blur */
+    /* Light background based on #dfe5ec with soft blur effect */
     background-color: #DFE5EC;
     background-image:
       radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.18) 0%, transparent 45%),
@@ -150,7 +150,7 @@
   }
 
   .dark body {
-    /* Fondo oscuro basado en #0d0f12 con acentos ligeramente azulados */
+    /* Dark background based on #0d0f12 with slightly bluish accents */
     background-color: #0d0f12;
     background-image:
       radial-gradient(circle at 0% 0%, #111827 0%, transparent 55%),
@@ -319,5 +319,5 @@
       animation: text-gradient 8s ease-in-out infinite;
     }
 
-    /* Keyframes definidos en tailwind.config.ts */
+    /* Keyframes defined in tailwind.config.ts */
 }

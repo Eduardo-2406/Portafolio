@@ -47,8 +47,8 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
             className="space-y-6 md:space-y-4"
           >
             <motion.h3 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.08 : 0 }} className="text-lg font-bold font-headline text-foreground">Eduardo R.</motion.h3>
-            <motion.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.14 : 0 }} className="text-xs text-foreground max-w-xs">Creando soluciones web pensadas desde la arquitectura hasta la última línea de código.</motion.p>
-            <motion.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.18 : 0 }} className="text-xs text-foreground/80">¿Tienes un proyecto en mente? ¡Hablemos!</motion.p>
+            <motion.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.14 : 0 }} className="text-xs text-foreground max-w-xs">Creating web solutions thought out from architecture to the last line of code.</motion.p>
+            <motion.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.18 : 0 }} className="text-xs text-foreground/80">Have a project in mind? Let&apos;s talk!</motion.p>
           </motion.div>
 
           {/* Columna 2: Navegación */}
@@ -60,8 +60,8 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
             transition={{ duration: 0.45, delay: isMobile ? 0.12 : 0.08 }}
             className="space-y-6 md:space-y-4"
           >
-            <motion.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.16 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Navegación</motion.h4>
-            <nav className="flex flex-col space-y-3 md:space-y-2" aria-label="Enlaces rápidos">
+            <motion.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.16 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Navigation</motion.h4>
+            <nav className="flex flex-col space-y-3 md:space-y-2" aria-label="Quick links">
               {navLinks.map((item, idx) => (
                 <motion.a
                   key={item.href}
@@ -88,8 +88,8 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
             transition={{ duration: 0.45, delay: isMobile ? 0.18 : 0.16 }}
             className="space-y-5 md:space-y-3"
           >
-            <motion.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.22 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Conecta Conmigo</motion.h4>
-            <motion.ul className="flex items-center gap-4 md:gap-3 flex-wrap" aria-label="Redes sociales">
+            <motion.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.22 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Connect With Me</motion.h4>
+            <motion.ul className="flex items-center gap-4 md:gap-3 flex-wrap" aria-label="Social networks">
               {platforms.map((platform, idx) => (
                 <motion.li
                   key={platform}
@@ -124,7 +124,7 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
               © {CURRENT_YEAR} Eduardo R.
             </motion.p>
             <motion.p initial={isMobile ? { opacity: 0, y: 10 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.32, delay: isMobile ? 0.38 : 0 }}>
-              Desarrollado con Next.js, React y Tailwind CSS
+              Developed with Next.js, React, and Tailwind CSS
             </motion.p>
           </div>
         </motion.div>
