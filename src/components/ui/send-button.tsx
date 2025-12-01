@@ -1,6 +1,6 @@
 "use client";
-import React, { useMemo } from 'react';
-import './send-button.css';
+
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type SendButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -12,11 +12,11 @@ const lettersSent = ['S','e','n','t'];
 
 const SendButtonBase = React.forwardRef<HTMLButtonElement, SendButtonProps>(({ isSubmitting = false, className, ...props }, ref) => {
   // precompute spans with CSS variable `--i` to avoid recreating style objects every render
-  const defaultSpans = useMemo(() => lettersDefault.map((ch, i) => (
+  const defaultSpans = React.useMemo(() => lettersDefault.map((ch, i) => (
     <span key={`d-${i}`} style={{ ['--i']: i } as unknown as React.CSSProperties}>{ch}</span>
   )), []);
 
-  const sentSpans = useMemo(() => lettersSent.map((ch, i) => (
+  const sentSpans = React.useMemo(() => lettersSent.map((ch, i) => (
     <span key={`s-${i}`} style={{ ['--i']: i + 5 } as unknown as React.CSSProperties}>{ch}</span>
   )), []);
 

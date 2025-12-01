@@ -17,6 +17,8 @@ const spaceGrotesk = Space_Grotesk({
   preload: true,
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
   adjustFontFallback: true,
+  // @ts-expect-error - fetchPriority is valid but not in types yet
+  fetchPriority: 'high', // Prioritize font loading for LCP
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -96,11 +98,12 @@ document.documentElement.classList.add(t);
 
 // Fluid scale for desktop (>=1280px)
 const D=1920;
-function f(){
+const f=()=>{
 const w=Math.max(document.documentElement.clientWidth,innerWidth||0);
 document.documentElement.style.fontSize=w<1280?'16px':(16*Math.min(Math.max(w/D,.75),1.35))+'px';
-}
-f();
+};
+// Defer initial calculation to avoid forced reflow
+requestAnimationFrame(f);
 let r=0;
 addEventListener('resize',()=>{r&&cancelAnimationFrame(r);r=requestAnimationFrame(f);},{passive:true});
 }catch(_){}
@@ -122,6 +125,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={spaceGrotesk.variable}
     >
       <head>
+        {/* Preconnect to Google Fonts for faster font loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
         <script dangerouslySetInnerHTML={{ __html: initScript }} />
       </head>
       <body className="font-body antialiased">

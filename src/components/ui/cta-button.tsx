@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import './cta-button.css';
+import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type CtaButtonProps = {

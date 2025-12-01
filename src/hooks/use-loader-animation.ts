@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-// Duración del loader: 5 segundos para apreciar toda la secuencia
-const LOADER_DURATION = 5000;
+// Duración del loader - OPTIMIZED FOR LCP
+const LOADER_DURATION = 2500; // REDUCED from 5000 for faster LCP
 // Delay antes de mover los marcos al centro (aparecen primero en esquinas)
-const FRAMES_TO_CENTER_DELAY = 600;
-// Tiempo de desaparición del loader (1.6s según page.tsx)
-const LOADER_EXIT_DURATION = 1600;
+const FRAMES_TO_CENTER_DELAY = 400; // REDUCED from 600 for faster LCP
+// Tiempo de desaparición del loader
+const LOADER_EXIT_DURATION = 1000; // REDUCED from 1600 for faster LCP
 
 export interface LoaderAnimationState {
   appReady: boolean;

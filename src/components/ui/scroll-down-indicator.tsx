@@ -3,7 +3,6 @@
 
 import React, { memo } from 'react';
 import { motion, useReducedMotion, cubicBezier } from 'framer-motion';
-import './scroll-down-indicator.css';
 
 const ease = cubicBezier(0.22, 1, 0.36, 1);
 

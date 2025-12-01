@@ -2,22 +2,27 @@
 
 import { useState, useCallback, memo, useEffect, useRef, lazy, Suspense } from 'react';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { AboutSection } from '@/components/sections/about-section';
 import dynamic from 'next/dynamic';
 
+// Dynamic imports for code splitting - reduces initial bundle size
+const AboutSection = dynamic(() => import('@/components/sections/about-section').then(mod => mod.AboutSection));
 const PortfolioSection = dynamic(() => import('@/components/sections/portfolio-section').then(mod => mod.PortfolioSection));
 const SkillsSection = dynamic(() => import('@/components/sections/skills-section').then(mod => mod.SkillsSection));
 const ContactSection = dynamic(() => import('@/components/sections/contact-section').then(mod => mod.ContactSection));
-import { DesktopHeader } from '@/components/layout/desktop-header';
+const DesktopHeader = dynamic(() => import('@/components/layout/desktop-header').then(mod => mod.DesktopHeader));
+const Header = dynamic(() => import('@/components/layout/header').then(mod => mod.Header));
+const Footer = dynamic(() => import('@/components/layout/footer').then(mod => mod.Footer));
+const DesktopContactFooter = dynamic(() => import('@/components/layout/footer-desktop-contact').then(mod => mod.DesktopContactFooter));
+
+// Client-only components - no SSR needed
+const CornerFrames = dynamic(() => import('@/components/corner-frames').then(mod => mod.CornerFrames), { ssr: false });
+const ScrollToTopButton = dynamic(() => import('@/components/scroll-to-top-button').then(mod => mod.ScrollToTopButton), { ssr: false });
+
+// Keep critical imports
 import type { NavItem } from '@/lib/nav-links';
 import { socialLinks, type SocialPlatform } from '@/lib/data';
 import { SocialIcon } from '@/components/social-icon';
 import { ScrollDownIndicator } from '@/components/ui/scroll-down-indicator';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { DesktopContactFooter } from '@/components/layout/footer-desktop-contact';
-import { ScrollToTopButton } from '@/components/scroll-to-top-button';
-import { CornerFrames } from '@/components/corner-frames';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSectionNavigation } from '@/hooks/use-section-navigation';
 import { useTheme } from '@/components/providers/theme-provider';
@@ -26,7 +31,6 @@ import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { useLoaderAnimation } from '@/hooks/use-loader-animation';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { ScrollRevealSection } from '@/components/scroll-reveal-section';
-import '@/styles/loader.css';
 
 // Lazy load componentes pesados que solo se usan en desktop
 const SmoothCursor = lazy(() => 
@@ -69,15 +73,15 @@ const ANIMATION_TIMING = {
   // Salida del contenido: rápido para que desaparezca antes de que los marcos lleguen al centro.
   CONTENT_EXIT_DURATION: 0.45,
   // Retardo antes de que el contenido vuelva a aparecer (debe coincidir con el retorno de marcos)
-  CONTENT_ENTER_DELAY: 0.2, // REDUCED from 0.9
+  CONTENT_ENTER_DELAY: 0.2,
   // Duración de entrada del contenido
-  CONTENT_ENTER_DURATION: 0.4, // REDUCED from 0.6
+  CONTENT_ENTER_DURATION: 0.4,
   // Tiempo total de la transición (en ms). Debe cubrir: fade-out -> marcos al centro/cruce -> marcos regreso -> fade-in inicio
-  TOTAL_TRANSITION_MS: 1000, // REDUCED from 1400
-  // Delays de contenido inicial
-  SOCIAL_ICONS_DELAY: 1.5, // REDUCED from 5.5
-  SCROLL_INDICATOR_DELAY_ABOUT: 2.5, // REDUCED from 7.5
-  SCROLL_INDICATOR_DELAY_MOBILE: 2, // REDUCED from 6
+  TOTAL_TRANSITION_MS: 1000,
+  // Delays de contenido inicial - OPTIMIZED FOR LCP
+  SOCIAL_ICONS_DELAY: 0.3, // REDUCED from 1.5 for faster LCP
+  SCROLL_INDICATOR_DELAY_ABOUT: 0.8, // REDUCED from 2.5 for faster LCP
+  SCROLL_INDICATOR_DELAY_MOBILE: 0.6, // REDUCED from 2 for faster LCP
   // Easing curves (cubic-bezier)
   EASE_OUT_EXPO: [0.76, 0, 0.24, 1],
   EASE_OUT_BACK: [0.34, 1.56, 0.64, 1],
@@ -96,7 +100,7 @@ const socialContainerVariants: Variants = {
   // Delay children so lateral icons start after main section/form animations
   visible: {
     opacity: 1,
-    transition: { delayChildren: 1.8, staggerChildren: 0.08 },
+    transition: { delayChildren: 0.5, staggerChildren: 0.08 }, // REDUCED from 1.8 for faster LCP
   },
   exit: { opacity: 0, transition: { duration: 0.35 } },
 };
@@ -606,7 +610,7 @@ export default function Home() {
               initial={{ opacity: 1 }}
               animate={{ opacity: loaderFramesReleased ? 0 : 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 1.6, ease: ANIMATION_TIMING.EASE_OUT_EXPO }}
+              transition={{ duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO }} // REDUCED from 1.6 for faster LCP
             >
               {/* Telón del loader */}
               <motion.div
@@ -617,7 +621,7 @@ export default function Home() {
                   scaleX: loaderFramesReleased ? 0 : 1,
                   opacity: loaderFramesReleased ? 0 : 1,
                 }}
-                transition={{ duration: 1.6, ease: ANIMATION_TIMING.EASE_OUT_EXPO }}
+                transition={{ duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO }} // REDUCED from 1.6 for faster LCP
               />
 
               {/* Animación del loader */}
@@ -630,10 +634,10 @@ export default function Home() {
                 }}
                 transition={{
                   scale: loaderFramesReleased 
-                    ? { duration: 1.4, ease: ANIMATION_TIMING.EASE_OUT_EXPO }
+                    ? { duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO } // REDUCED from 1.4
                     : { duration: 1.2, delay: 1.4, ease: ANIMATION_TIMING.EASE_OUT_BACK },
                   opacity: loaderFramesReleased
-                    ? { duration: 1.4, ease: ANIMATION_TIMING.EASE_OUT_QUINT }
+                    ? { duration: 1, ease: ANIMATION_TIMING.EASE_OUT_QUINT } // REDUCED from 1.4
                     : { duration: 1.2, delay: 1.4, ease: ANIMATION_TIMING.EASE_OUT_QUINT },
                 }}
               >

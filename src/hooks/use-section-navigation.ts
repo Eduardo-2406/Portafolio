@@ -63,6 +63,25 @@ export function useSectionNavigation(totalSections: number) {
     if (isMobile) return; // only on desktop
 
     const WHEEL_THROTTLE_DELAY = 100;
+    
+    // Cache to avoid forced reflows - stores whether an element is scrollable
+    const scrollableCache = new WeakMap<HTMLElement, boolean>();
+
+    const isScrollable = (el: HTMLElement): boolean => {
+      // Check cache first
+      if (scrollableCache.has(el)) {
+        return scrollableCache.get(el)!;
+      }
+
+      // Batch read all layout properties at once to minimize reflows
+      const style = window.getComputedStyle(el);
+      const canScrollY = (style.overflowY === 'auto' || style.overflowY === 'scroll');
+      const hasScroll = canScrollY && el.scrollHeight > el.clientHeight;
+      
+      // Cache the result
+      scrollableCache.set(el, hasScroll);
+      return hasScroll;
+    };
 
     const handleWheel = (event: WheelEvent) => {
       if (blockNavigationRef.current || isNavigatingRef.current) return;
@@ -72,11 +91,10 @@ export function useSectionNavigation(totalSections: number) {
         const editable = target.closest('textarea, input, [contenteditable=""], [contenteditable="true"]');
         if (editable) return;
 
+        // Check if any parent is scrollable
         let el: HTMLElement | null = target;
         while (el && el !== document.body) {
-          const style = window.getComputedStyle(el);
-          const canScrollY = (style.overflowY === 'auto' || style.overflowY === 'scroll');
-          if (canScrollY && el.scrollHeight > el.clientHeight) return;
+          if (isScrollable(el)) return;
           el = el.parentElement;
         }
       }

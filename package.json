@@ -48,6 +48,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.0.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -62,10 +63,7 @@
     "typescript": "^5"
   },
   "browserslist": [
-    "defaults",
-    "not IE 11",
-    "not chrome < 90",
-    "not safari < 14",
-    "not android < 80"
+    "defaults and fully supports es6-module",
+    "maintained node versions"
   ]
 }
