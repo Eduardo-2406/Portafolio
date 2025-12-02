@@ -1,9 +1,21 @@
 import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk } from 'next/font/google';
+import dynamic from 'next/dynamic'; // Importante para Lazy Loading
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { ErrorBoundary } from '@/components/error-boundary';
+import { FluidResize } from '@/components/fluid-resize';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PERFORMANCE CONFIGURATION (Lazy Load)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Carga diferida del Wrapper de animación.
+// 'ssr: true' permite que el HTML se genere, pero el JS de animación se hidrata después.
+const MotionWrapper = dynamic(() => import('@/components/motion-wrapper'), {
+  ssr: true
+});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // FONT CONFIGURATION
@@ -13,12 +25,12 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
-  display: 'swap', // Better for LCP, ensures text is visible immediately
+  display: 'swap',
   preload: true,
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
   adjustFontFallback: true,
   // @ts-expect-error - fetchPriority is valid but not in types yet
-  fetchPriority: 'high', // Prioritize font loading for LCP
+  fetchPriority: 'high',
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -80,34 +92,14 @@ export const viewport: Viewport = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// INITIALIZATION SCRIPTS (prevent FOUC and configure fluid scale)
+// CRITICAL SCRIPT (Theme Only)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Combined script executed before render:
- * 1. Applies saved theme to prevent Flash of Unstyled Content (FOUC)
- * 2. Configures fluid viewport scale for large screens
+ * Script minificado y crítico que SOLO maneja el tema para evitar FOUC.
+ * La lógica de resize se movió al componente FluidResize para no bloquear el render.
  */
-const initScript = `(()=>{
-try{
-// Theme initialization
-const s=localStorage.getItem('theme');
-const d=matchMedia('(prefers-color-scheme:dark)').matches;
-const t=s==='light'||s==='dark'?s:d?'dark':'light';
-document.documentElement.classList.add(t);
-
-// Fluid scale for desktop (>=1280px)
-const D=1920;
-const f=()=>{
-const w=Math.max(document.documentElement.clientWidth,innerWidth||0);
-document.documentElement.style.fontSize=w<1280?'16px':(16*Math.min(Math.max(w/D,.75),1.35))+'px';
-};
-// Defer initial calculation to avoid forced reflow
-requestAnimationFrame(f);
-let r=0;
-addEventListener('resize',()=>{r&&cancelAnimationFrame(r);r=requestAnimationFrame(f);},{passive:true});
-}catch(_){}
-})();`;
+const themeScript = `(()=>{try{const s=localStorage.getItem('theme');const d=matchMedia('(prefers-color-scheme:dark)').matches;const t=s==='light'||s==='dark'?s:d?'dark':'light';document.documentElement.classList.add(t);}catch(_){}})();`;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ROOT LAYOUT
@@ -125,16 +117,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={spaceGrotesk.variable}
     >
       <head>
-        {/* Preconnect to Google Fonts for faster font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        <script dangerouslySetInnerHTML={{ __html: initScript }} />
+        {/* Script ultraligero que no bloquea el hilo principal */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="font-body antialiased">
         <ThemeProvider>
           <ErrorBoundary>
-            <main>{children}</main>
+            {/* 1. Lógica de resize fuera del hilo crítico */}
+            <FluidResize />
+            
+            {/* 2. Envoltura Lazy para reducir el bundle de JS inicial */}
+            <MotionWrapper>
+              <main>{children}</main>
+            </MotionWrapper>
+            
           </ErrorBoundary>
           <Toaster />
         </ThemeProvider>

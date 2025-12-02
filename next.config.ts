@@ -1,15 +1,13 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from '@next/bundle-analyzer';
 
-// Bundle analyzer for production optimization
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
 const nextConfig: NextConfig = {
-  // Production optimizations
   reactStrictMode: true,
-  productionBrowserSourceMaps: false, // Reduces bundle size
+  productionBrowserSourceMaps: false,
   poweredByHeader: false,
 
   compiler: {
@@ -21,13 +19,20 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048], 
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ["lucide-react", "date-fns", "framer-motion"],
+    optimizePackageImports: [
+      "lucide-react", 
+      "date-fns", 
+      "framer-motion",
+      "@radix-ui/react-icons",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-dialog",
+    ],
   },
 };
 
