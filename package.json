@@ -61,10 +61,12 @@
     "typescript": "^5"
   },
   "browserslist": [
-    "chrome >= 100",
-    "safari >= 15",
-    "firefox >= 100",
-    "edge >= 100",
-    "not IE 11"
+    "chrome >= 109",
+    "safari >= 16",
+    "firefox >= 115",
+    "edge >= 109",
+    "not dead",
+    "not IE 11",
+    "not op_mini all"
   ]
 }

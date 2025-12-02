@@ -1,6 +1,7 @@
 "use client";
 
-import { m, type Transition } from 'framer-motion';
+import { m } from 'framer-motion';
+import type { Transition } from 'framer-motion';
 import { memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 

@@ -2,9 +2,12 @@
 'use client';
 
 import React, { memo } from 'react';
-import { m, useReducedMotion, cubicBezier } from 'framer-motion';
+import { m } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
+import { cubicBezier } from 'framer-motion';
+import { EASE_OUT_QUINT_BEZIER } from '@/lib/animation-constants';
 
-const ease = cubicBezier(0.22, 1, 0.36, 1);
+const ease = EASE_OUT_QUINT_BEZIER;
 
 type ScrollDownIndicatorProps = {
   onClick: () => void;

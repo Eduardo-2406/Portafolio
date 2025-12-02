@@ -2,7 +2,8 @@
 
 import React, { memo, useCallback } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 import { AnimatedHamburger } from '../ui/animated-hamburger';
 import type { NavItem } from '@/lib/nav-links';
 

@@ -6,7 +6,8 @@ import { projects } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import type { Project } from '@/lib/data';
 import { CtaButton } from '../ui/cta-button';
-import { m, useAnimation } from 'framer-motion';
+import { m } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import { TechIcon, type TechName } from '@/components/tech-icon';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
@@ -39,8 +40,9 @@ type PortfolioSectionProps = {
 };
 
 import { cubicBezier } from 'framer-motion';
+import { EASE_OUT_QUINT_BEZIER } from '@/lib/animation-constants';
 
-const ease = cubicBezier(0.22, 1, 0.36, 1);
+const ease = EASE_OUT_QUINT_BEZIER;
 const entranceEase = cubicBezier(0.76, 0, 0.24, 1);
 const getFieldTransition = (delay = 0.3, duration = 1, baseDelay = 0) => ({ duration, delay: baseDelay + delay, ease: entranceEase });
 

@@ -2,7 +2,8 @@
 
 import { ReactNode, useEffect, useState, useRef, useCallback, memo } from 'react';
 import { cubicBezier } from 'framer-motion';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 import { TypingAnimation } from '@/registry/magicui/typing-animation';
 
 const AnimatedHeading = memo(function AnimatedHeading({ 

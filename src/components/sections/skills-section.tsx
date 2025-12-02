@@ -3,10 +3,13 @@
 import React, { useMemo, memo, type ReactNode } from 'react';
 import { skills, type Skill } from '@/lib/data';
 import { TechIcon } from '../tech-icon';
-import { m, cubicBezier, useAnimation } from 'framer-motion';
+import { m } from 'framer-motion';
+import { cubicBezier } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { EASE_OUT_QUINT_BEZIER } from '@/lib/animation-constants';
 
-const ease = cubicBezier(0.22, 1, 0.36, 1);
+const ease = EASE_OUT_QUINT_BEZIER;
 const entranceEase = cubicBezier(0.25, 0.46, 0.45, 0.94);
 // hoverEase removed: icon hover now uses CSS transform transitions (Tailwind) instead of framer-motion ease
 

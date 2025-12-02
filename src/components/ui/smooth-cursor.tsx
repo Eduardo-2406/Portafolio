@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef, useMemo } from "react";
-import { m, useSpring } from "framer-motion";
+import { m } from "framer-motion";
+import { useSpring } from "framer-motion";
 
 // ============================================================================
 // TYPES & CONSTANTS

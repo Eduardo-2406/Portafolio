@@ -1,14 +1,30 @@
 "use client";
 
 import { useState, useCallback, memo, useEffect, useRef, lazy, Suspense } from 'react';
-import { AnimatePresence, m, type Variants } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for code splitting - reduces initial bundle size
+// AboutSection needs SSR for SEO, but others can be client-only
 const AboutSection = dynamic(() => import('@/components/sections/about-section').then(mod => mod.AboutSection));
-const PortfolioSection = dynamic(() => import('@/components/sections/portfolio-section').then(mod => mod.PortfolioSection));
-const SkillsSection = dynamic(() => import('@/components/sections/skills-section').then(mod => mod.SkillsSection));
-const ContactSection = dynamic(() => import('@/components/sections/contact-section').then(mod => mod.ContactSection));
+
+// Below-the-fold sections - no SSR needed, reduces initial bundle significantly
+const PortfolioSection = dynamic(
+  () => import('@/components/sections/portfolio-section').then(mod => mod.PortfolioSection),
+  { ssr: false }
+);
+const SkillsSection = dynamic(
+  () => import('@/components/sections/skills-section').then(mod => mod.SkillsSection),
+  { ssr: false }
+);
+const ContactSection = dynamic(
+  () => import('@/components/sections/contact-section').then(mod => mod.ContactSection),
+  { ssr: false }
+);
+
+// Layout components - keep SSR for initial paint
 const DesktopHeader = dynamic(() => import('@/components/layout/desktop-header').then(mod => mod.DesktopHeader));
 const Header = dynamic(() => import('@/components/layout/header').then(mod => mod.Header));
 const Footer = dynamic(() => import('@/components/layout/footer').then(mod => mod.Footer));
@@ -18,11 +34,13 @@ const DesktopContactFooter = dynamic(() => import('@/components/layout/footer-de
 const CornerFrames = dynamic(() => import('@/components/corner-frames').then(mod => mod.CornerFrames), { ssr: false });
 const ScrollToTopButton = dynamic(() => import('@/components/scroll-to-top-button').then(mod => mod.ScrollToTopButton), { ssr: false });
 
+// Optimize below-the-fold UI components
+const ScrollDownIndicator = dynamic(() => import('@/components/ui/scroll-down-indicator').then(mod => mod.ScrollDownIndicator), { ssr: false });
+const SocialIcon = dynamic(() => import('@/components/social-icon').then(mod => mod.SocialIcon), { ssr: false });
+
 // Keep critical imports
 import type { NavItem } from '@/lib/nav-links';
 import { socialLinks, type SocialPlatform } from '@/lib/data';
-import { SocialIcon } from '@/components/social-icon';
-import { ScrollDownIndicator } from '@/components/ui/scroll-down-indicator';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSectionNavigation } from '@/hooks/use-section-navigation';
 import { useTheme } from '@/components/providers/theme-provider';
@@ -31,6 +49,10 @@ import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { useLoaderAnimation } from '@/hooks/use-loader-animation';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { ScrollRevealSection } from '@/components/scroll-reveal-section';
+
+// Animation constants and variants (extracted for code splitting)
+import { ANIMATION_TIMING, COMPACT_THRESHOLD_PX, LOADER_SPANS_COUNT } from '@/lib/animation-constants';
+import { socialContainerVariants, socialIconVariants, headerSpringTransition } from '@/lib/animation-variants';
 
 // Lazy load componentes pesados que solo se usan en desktop
 const SmoothCursor = lazy(() => 
@@ -64,69 +86,6 @@ const SECTIONS = [
 ] as const;
 
 const SOCIAL_PLATFORMS: SocialPlatform[] = ['github', 'linkedin', 'whatsapp', 'cv'];
-
-const LOADER_SPANS_COUNT = 15;
-
-// Timing centralizado para animaciones (en segundos, excepto donde se indica)
-const ANIMATION_TIMING = {
-  // Transiciones de sección (ajustadas para sincronizar con los marcos)
-  // Salida del contenido: rápido para que desaparezca antes de que los marcos lleguen al centro.
-  CONTENT_EXIT_DURATION: 0.45,
-  // Retardo antes de que el contenido vuelva a aparecer (debe coincidir con el retorno de marcos)
-  CONTENT_ENTER_DELAY: 0.2,
-  // Duración de entrada del contenido
-  CONTENT_ENTER_DURATION: 0.4,
-  // Tiempo total de la transición (en ms). Debe cubrir: fade-out -> marcos al centro/cruce -> marcos regreso -> fade-in inicio
-  TOTAL_TRANSITION_MS: 1000,
-  // Delays de contenido inicial - OPTIMIZED FOR LCP
-  SOCIAL_ICONS_DELAY: 0.3, // REDUCED from 1.5 for faster LCP
-  SCROLL_INDICATOR_DELAY_ABOUT: 0.8, // REDUCED from 2.5 for faster LCP
-  SCROLL_INDICATOR_DELAY_MOBILE: 0.6, // REDUCED from 2 for faster LCP
-  // Easing curves (cubic-bezier)
-  EASE_OUT_EXPO: [0.76, 0, 0.24, 1],
-  EASE_OUT_BACK: [0.34, 1.56, 0.64, 1],
-  EASE_OUT_QUINT: [0.22, 1, 0.36, 1],
-  EASE_OUT_CIRC: [0.25, 0.46, 0.45, 0.94],
-} as const;
-
-const COMPACT_THRESHOLD_PX = 540;
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// VARIANTES DE ANIMACIÓN (Framer Motion)
-// ═══════════════════════════════════════════════════════════════════════════════
-
-const socialContainerVariants: Variants = {
-  hidden: { opacity: 0 },
-  // Delay children so lateral icons start after main section/form animations
-  visible: {
-    opacity: 1,
-    transition: { delayChildren: 0.5, staggerChildren: 0.08 }, // REDUCED from 1.8 for faster LCP
-  },
-  exit: { opacity: 0, transition: { duration: 0.35 } },
-};
-
-const socialIconVariants: Variants = {
-  // Start hidden: scaled down and invisible so scale-in + fade-in is noticeable
-  hidden: { scale: 0, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.6, ease: ANIMATION_TIMING.EASE_OUT_BACK },
-  },
-  // Exit: scale out + fade
-  exit: {
-    scale: 0,
-    opacity: 0,
-    transition: { duration: 0.45, ease: ANIMATION_TIMING.EASE_OUT_BACK },
-  },
-};
-
-const headerSpringTransition = {
-  type: "spring" as const,
-  stiffness: 100,
-  damping: 20,
-  restDelta: 0.001,
-};
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COMPONENTES AUXILIARES
@@ -600,6 +559,16 @@ export default function Home() {
     <>
       {/* Marcos decorativos (solo desktop ≥1280px) */}
       {!isMobileView && <CornerFrames frameState={frameState} />}
+
+      {/* Cursor personalizado (solo desktop, lazy loaded) */}
+      {!isMobileView && (
+        <Suspense fallback={null}>
+          <SmoothCursor theme={prefersReducedMotion ? 'light' : 'dark'} />
+        </Suspense>
+      )}
+
+      {/* Botón scroll to top (carga solo cuando se hace scroll) */}
+      <ScrollToTopButton />
 
       <div className="relative min-h-screen">
         <AnimatePresence mode="wait" initial>

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useActionState, useEffect, useRef, useState, ReactNode, useCallback, useMemo, memo } from 'react';
-import { m, LayoutGroup, cubicBezier } from 'framer-motion';
+import { m } from 'framer-motion';
+import { LayoutGroup } from 'framer-motion';
+import { cubicBezier } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Input } from '@/components/ui/input';
