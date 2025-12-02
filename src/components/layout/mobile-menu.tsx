@@ -2,7 +2,7 @@
 
 import React, { memo, useCallback } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { AnimatedHamburger } from '../ui/animated-hamburger';
 import type { NavItem } from '@/lib/nav-links';
 
@@ -32,7 +32,7 @@ const MenuContent = memo(function MenuContent({ isOpen, navItems, setIsOpen }: M
   return (
     <AnimatePresence initial={false}>
       {isOpen && (
-        <motion.div
+        <m.div
           key="mobile-menu"
           variants={contentVariants}
           initial="hidden"
@@ -54,7 +54,7 @@ const MenuContent = memo(function MenuContent({ isOpen, navItems, setIsOpen }: M
               </Link>
             ))}
           </nav>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

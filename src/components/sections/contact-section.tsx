@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useActionState, useEffect, useRef, useState, ReactNode, useCallback, useMemo, memo } from 'react';
-import { motion, LayoutGroup, cubicBezier } from 'framer-motion';
+import { m, LayoutGroup, cubicBezier } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { submitContactForm, type ContactFormState } from '@/app/actions';
 import { Input } from '@/components/ui/input';
@@ -138,7 +138,7 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
       style={{ paddingBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}
     >
       <LayoutGroup id="contact-form-layout">
-        <motion.div
+        <m.div
           layout
           animate={contentVisible ? { y: 0 } : { y: 0 }}
           transition={{ layout: { duration: 0.5, ease: easeCurve } }}
@@ -150,8 +150,8 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
           }}
         >
           {/* Name */}
-          <motion.div layoutId="name-field" layout="position" className="space-y-2">
-            <motion.div
+          <m.div layoutId="name-field" layout="position" className="space-y-2">
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ y: '100%', opacity: 0 }}
               animate={!isMobile && contentVisible ? { y: 0, opacity: 1 } : undefined}
@@ -165,9 +165,9 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                 </svg>
                 Name
               </Label>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ x: -24, opacity: 0 }}
               animate={!isMobile && contentVisible ? { x: 0, opacity: 1 } : undefined}
@@ -189,16 +189,16 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               <p className={`${(clientErrors.name || state.errors?.name) && (clientErrors.name?.length || state.errors?.name?.length) ? 'text-red-400 visible font-medium' : 'invisible'}`} style={{ marginTop: 'clamp(0.35rem, 0.8vh, 0.6rem)', fontSize: 'clamp(0.8rem, 1vw, 0.9rem)' }}>
                 {clientErrors.name?.[0] || state.errors?.name?.[0] || 'Invalid name'}
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Email */}
-          <motion.div
+          <m.div
             layoutId="email-field"
             layout="position"
             className="space-y-2"
           >
-            <motion.div
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ y: '100%', opacity: 0 }}
               animate={!isMobile && contentVisible ? { y: 0, opacity: 1 } : undefined}
@@ -216,9 +216,9 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                 </svg>
                 Email
               </Label>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ x: -24, opacity: 0 }}
               animate={!isMobile && contentVisible ? { x: 0, opacity: 1 } : undefined}
@@ -255,16 +255,16 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               >
                 {clientErrors.email?.[0] || state.errors?.email?.[0] || 'Invalid email'}
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Message */}
-          <motion.div
+          <m.div
             layoutId="message-field"
             layout="position"
             className="space-y-2"
           >
-            <motion.div
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ y: '100%', opacity: 0 }}
               animate={contentVisible ? { y: 0, opacity: 1 } : undefined}
@@ -282,9 +282,9 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
                 </svg>
                 Message
               </Label>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               style={{ overflow: 'hidden' }}
               initial={{ x: -24, opacity: 0 }}
               animate={contentVisible ? { x: 0, opacity: 1 } : undefined}
@@ -322,16 +322,16 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               >
                 {clientErrors.message?.[0] || state.errors?.message?.[0] || 'Invalid message'}
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Button */}
-          <motion.div
+          <m.div
             layoutId="send-button"
             layout="position"
             className="mt-2 flex justify-end"
           >
-            <motion.div
+            <m.div
               initial={{ scale: 0, opacity: 0 }}
               animate={!isMobile && contentVisible ? { scale: 1, opacity: 1 } : undefined}
               whileInView={isMobile ? { scale: 1, opacity: 1 } : undefined}
@@ -339,9 +339,9 @@ function ContactForm({ className, isCompact = false, contentVisible = false }: L
               transition={isMobile ? { duration: 0.45, delay: baseDelay + 3 * 0.12 + 0.06, ease: socialEase } : { duration: 0.45, delay: 0.6, ease: socialEase }}
             >
               <SendButton isSubmitting={isAnimating} />
-            </motion.div>
-          </motion.div>
-        </motion.div>
+            </m.div>
+          </m.div>
+        </m.div>
       </LayoutGroup>
     </form>
   );
@@ -367,12 +367,12 @@ export const ContactSection = memo(function ContactSection({ isCompact = false, 
   const [cardEntered, setCardEntered] = useState(false);
 
   return (
-    <motion.section layout transition={{ layout: { type: 'spring', stiffness: 220, damping: 26, mass: 0.9 } }} id="contact" className={sectionClass}>
-      <motion.div layout className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+    <m.section layout transition={{ layout: { type: 'spring', stiffness: 220, damping: 26, mass: 0.9 } }} id="contact" className={sectionClass}>
+      <m.div layout className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         {/* Title */}
-        <motion.div layout className={`${footerVisible ? 'mb-6' : 'mb-8 sm:mb-12'} space-y-2 text-center`}>
-          <motion.div style={{ overflow: 'hidden' }}>
-            <motion.h2
+        <m.div layout className={`${footerVisible ? 'mb-6' : 'mb-8 sm:mb-12'} space-y-2 text-center`}>
+          <m.div style={{ overflow: 'hidden' }}>
+            <m.h2
               style={{ fontSize: 'clamp(1.875rem, 5vw, 3.125rem)' }}
               className="font-bold tracking-tighter font-headline text-foreground"
               initial={{ y: '100%', opacity: 0 }}
@@ -380,13 +380,13 @@ export const ContactSection = memo(function ContactSection({ isCompact = false, 
               transition={{ duration: 0.5, delay: 0.08, ease: easeCurve }}
             >
               Contact Me
-            </motion.h2>
-          </motion.div>
-        </motion.div>
+            </m.h2>
+          </m.div>
+        </m.div>
 
         {/* Main Layout */}
         <div className="max-w-2xl mx-auto">
-          <motion.div
+          <m.div
             className="relative rounded-xl border border-foreground/10 bg-card/30 p-6 lg:p-8 shadow-sm"
             initial={{ y: '10%', opacity: 0 }}
             animate={parentContentVisible ? { y: 0, opacity: 1 } : { y: '10%', opacity: 0 }}
@@ -399,9 +399,9 @@ export const ContactSection = memo(function ContactSection({ isCompact = false, 
             <div className="relative z-10">
               <ContactForm isCompact={isCompact} contentVisible={!useIsMobile() && cardEntered} />
             </div>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
-    </motion.section>
+      </m.div>
+    </m.section>
   );
 });

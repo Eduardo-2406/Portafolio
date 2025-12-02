@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 type Platform = 'github' | 'linkedin' | 'whatsapp' | 'cv';
 
@@ -66,7 +66,7 @@ export const SocialIcon = ({ platform, url, className, variant = 'footer' }: Soc
   // Variante About: Cards compactas
   if (variant === 'about') {
     return (
-      <motion.div whileHover={{ y: -4, scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <m.div whileHover={{ y: -4, scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link
           href={url}
           target="_blank"
@@ -86,14 +86,14 @@ export const SocialIcon = ({ platform, url, className, variant = 'footer' }: Soc
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </Link>
-      </motion.div>
+      </m.div>
     );
   }
 
   // Variante Lateral: Solo icono circular
   if (variant === 'lateral') {
     return (
-      <motion.div whileHover={{ x: 4, scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+      <m.div whileHover={{ x: 4, scale: 1.1 }} whileTap={{ scale: 0.95 }}>
         <Link
           href={url}
           target="_blank"
@@ -107,7 +107,7 @@ export const SocialIcon = ({ platform, url, className, variant = 'footer' }: Soc
             {getIcon()}
           </div>
         </Link>
-      </motion.div>
+      </m.div>
     );
   }
 

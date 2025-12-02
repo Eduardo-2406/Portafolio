@@ -2,7 +2,7 @@
 'use client';
 
 import React, { memo } from 'react';
-import { motion, useReducedMotion, cubicBezier } from 'framer-motion';
+import { m, useReducedMotion, cubicBezier } from 'framer-motion';
 
 const ease = cubicBezier(0.22, 1, 0.36, 1);
 
@@ -21,7 +21,7 @@ const ScrollDownIndicatorBase = ({ onClick, delay = 0 }: ScrollDownIndicatorProp
   const exit = shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0, scale: 0.9, transition: { duration: 0.3, delay: 0, ease } };
 
   return (
-    <motion.button
+    <m.button
       type="button"
       aria-label="Ir a la siguiente sección"
       initial={initial}
@@ -36,7 +36,7 @@ const ScrollDownIndicatorBase = ({ onClick, delay = 0 }: ScrollDownIndicatorProp
           <div className="chevrondown" />
         </div>
       </div>
-    </motion.button>
+    </m.button>
   );
 };
 

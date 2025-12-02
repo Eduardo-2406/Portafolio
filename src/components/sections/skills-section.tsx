@@ -3,7 +3,7 @@
 import React, { useMemo, memo, type ReactNode } from 'react';
 import { skills, type Skill } from '@/lib/data';
 import { TechIcon } from '../tech-icon';
-import { motion, cubicBezier, useAnimation } from 'framer-motion';
+import { m, cubicBezier, useAnimation } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const ease = cubicBezier(0.22, 1, 0.36, 1);
@@ -46,7 +46,7 @@ const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, 
   const isMobile = useIsMobile();
   // groupDelay available for future tuning; not used directly here
   return (
-    <motion.div
+    <m.div
       className="group relative"
       initial={'hidden'}
       variants={cardItemVariants}
@@ -59,7 +59,7 @@ const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, 
       <div className="relative h-full rounded-lg border border-foreground/10 bg-card/50 p-3">
         {/* Top border progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-lg overflow-hidden bg-foreground/5">
-          <motion.div
+          <m.div
             className="h-full bg-gradient-to-r from-primary via-primary to-primary/70"
             variants={{ hidden: { width: 0 }, visible: { width: `${level}%`, transition: { duration: 1.0, ease: entranceEase } } }}
           />
@@ -82,7 +82,7 @@ const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, 
 
         {/* Decorative bottom line removed to avoid persistent 'glow' look */}
       </div>
-    </motion.div>
+    </m.div>
   );
 });
 
@@ -180,9 +180,9 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
     <section id="skills" className="w-full h-full flex flex-col items-center justify-center pt-8 pb-32 sm:pt-12 sm:pb-32 md:pt-16 md:pb-32 lg:pt-16 lg:pb-32 scroll-mt-16">
       <div className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         {/* Main Title */}
-        <motion.div className="flex flex-col items-center justify-center space-y-1 text-center mb-12 sm:mb-16 max-w-4xl mx-auto">
-          <motion.div style={{ overflow: 'hidden' }}>
-            <motion.h2
+        <m.div className="flex flex-col items-center justify-center space-y-1 text-center mb-12 sm:mb-16 max-w-4xl mx-auto">
+          <m.div style={{ overflow: 'hidden' }}>
+            <m.h2
               style={{ fontSize: 'clamp(1.875rem, 5vw, 3.125rem)' }}
               className="font-bold tracking-tighter font-headline text-foreground z-20"
               initial={{ y: '100%', opacity: 0 }}
@@ -192,29 +192,29 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
               viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
             >
               Skills
-            </motion.h2>
-          </motion.div>
-        </motion.div>
+            </m.h2>
+          </m.div>
+        </m.div>
 
         <div className="max-w-7xl mx-auto space-y-12 lg:space-y-16">
           {/* Frontend Section */}
           <div>
             <div className="mb-6">
-                <motion.div
+                <m.div
                   initial="hidden"
                   variants={headerContainerVariants}
                   animate={!isMobile ? frontendHeaderControls : undefined}
                   whileInView={isMobile ? 'visible' : undefined}
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
                 >
-                  <motion.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants}>
+                  <m.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants}>
                     <span className="inline-block w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
                     Frontend Development
-                  </motion.div>
-                  <motion.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.06, ease }}>
+                  </m.div>
+                  <m.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.06, ease }}>
                     UI Design and Development
-                  </motion.div>
-                </motion.div>
+                  </m.div>
+                </m.div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6">
               {frontendSkills.map((skill, idx) => (
@@ -227,24 +227,24 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
           {/* Backend Section */}
           <div>
             <div className="mb-6">
-              <motion.div
+              <m.div
                 initial="hidden"
                 variants={headerContainerVariants}
                 animate={!isMobile ? backendHeaderControls : undefined}
                 whileInView={isMobile ? 'visible' : undefined}
                 viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
               >
-                <motion.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants} transition={{ duration: 0.36, delay: 0.06 }}>
+                <m.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants} transition={{ duration: 0.36, delay: 0.06 }}>
                   <span className="inline-block w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
                   Backend & Database
-                </motion.div>
-                <motion.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.08 }}
+                </m.div>
+                <m.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.08 }}
                   whileInView={isMobile ? 'visible' : undefined}
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
                 >
                   Servers, APIs, and Data Management
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6">
               {backendSkills.map((skill, idx) => (

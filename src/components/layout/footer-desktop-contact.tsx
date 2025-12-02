@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { SocialIcon } from '@/components/social-icon';
 import { socialLinks, type SocialPlatform } from '@/lib/data';
 
@@ -26,7 +26,7 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
   const platforms = useMemo(() => Object.keys(socialLinks) as SocialPlatform[], []);
 
   return (
-    <motion.aside
+    <m.aside
       className="w-72 xl:w-80 2xl:w-96 flex-shrink-0 h-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -34,39 +34,39 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
       exit={{ opacity: 0, transition: { duration: 0.3, ease } }}
     >
       <div className="h-full flex flex-col justify-between py-8 xl:py-10 px-6 xl:px-8 rounded-2xl border border-foreground/10 bg-card/20">
-        <motion.div className="space-y-8 xl:space-y-10" initial="hidden" animate="visible" variants={containerVariants} custom={0}>
+        <m.div className="space-y-8 xl:space-y-10" initial="hidden" animate="visible" variants={containerVariants} custom={0}>
           {/* Info personal */}
-          <motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
-            <motion.h3
+          <m.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
+            <m.h3
               className="text-3xl xl:text-4xl font-bold font-headline text-foreground leading-tight"
               initial={{ y: '100%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.6, ease }}
             >
               Eduardo R.
-            </motion.h3>
-            <motion.p
+            </m.h3>
+            <m.p
               className="text-base xl:text-lg text-muted-foreground leading-relaxed"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.8, ease }}
             >
               Frontend Developer creating modern web experiences.
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
 
           {/* Redes sociales */}
           <div className="space-y-4 pt-6 border-t border-foreground/10">
-            <motion.h4
+            <m.h4
               className="text-xs xl:text-sm font-semibold text-foreground/80 uppercase tracking-wider"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.95, ease }}
             >
               Connect With Me
-            </motion.h4>
+            </m.h4>
 
-            <motion.ul
+            <m.ul
               className="flex flex-col gap-2.5"
               variants={containerVariants}
               initial="hidden"
@@ -76,16 +76,16 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
               custom={1.05}
             >
               {platforms.map((platform) => (
-                <motion.li key={platform} variants={socialItemVariants} whileHover={{ x: 4, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <m.li key={platform} variants={socialItemVariants} whileHover={{ x: 4, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <SocialIcon platform={platform} url={socialLinks[platform]} variant="footer" />
-                </motion.li>
+                </m.li>
               ))}
-            </motion.ul>
+            </m.ul>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Copyright - Al final */}
-        <motion.div
+        <m.div
           className="pt-8 mt-8 border-t border-foreground/10 space-y-2"
           initial={{ x: -10, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -93,9 +93,9 @@ export const DesktopContactFooter = memo(function DesktopContactFooter() {
         >
           <p className="text-xs xl:text-sm text-muted-foreground">© {CURRENT_YEAR} Eduardo R.</p>
           <p className="text-xs xl:text-sm text-muted-foreground leading-relaxed">Developed with Next.js, React, and Tailwind CSS</p>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.aside>
+    </m.aside>
   );
 });
 

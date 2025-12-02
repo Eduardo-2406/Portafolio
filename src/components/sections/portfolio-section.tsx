@@ -6,7 +6,7 @@ import { projects } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import type { Project } from '@/lib/data';
 import { CtaButton } from '../ui/cta-button';
-import { motion, useAnimation } from 'framer-motion';
+import { m, useAnimation } from 'framer-motion';
 import { TechIcon, type TechName } from '@/components/tech-icon';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
@@ -20,9 +20,9 @@ import {
 } from '@/components/ui/card';
 
 // Motion-wrapped slot components declared at module scope to preserve stable identity
-// Use `motion.create()` per framer-motion deprecation notice
-const MotionCardTitle = motion.create(CardTitle);
-const MotionCardDescription = motion.create(CardDescription);
+// Use `m.create()` per framer-motion deprecation notice
+const MotionCardTitle = m.create(CardTitle);
+const MotionCardDescription = m.create(CardDescription);
 
 type PortfolioSectionProps = {
   onMoreInfoClick?: (project: Project) => void;
@@ -58,7 +58,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
   return (
     <Card className="overflow-hidden border-foreground/10 bg-card/95 shadow-sm">
         {projectImage && (
-        <motion.div
+        <m.div
           className="relative w-full aspect-[4/3] overflow-hidden bg-[#CED7DE] dark:bg-[#141926]"
           whileInView={isMobileTablet ? { y: 0, opacity: 1 } : undefined}
           initial={isMobileTablet ? { y: 24, opacity: 0 } : undefined}
@@ -73,7 +73,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-contain"
           />
-        </motion.div>
+        </m.div>
       )}
 
       <CardHeader className="gap-1.5 pt-4">
@@ -122,7 +122,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
         <div className="mb-2">
           {isMobileTablet ? (
             <>
-              <motion.h4
+              <m.h4
                 className="text-xs sm:text-sm font-semibold text-foreground/90 mb-1.5"
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: 16, opacity: 0 }}
@@ -130,10 +130,10 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
                 transition={{ duration: 0.45, ease, delay: baseDelay + 0.12 }}
               >
                 Technologies
-              </motion.h4>
+              </m.h4>
               <div className="flex flex-wrap gap-1.5 max-w-[22.5rem]">
                 {project.tags.map((tag, idx) => (
-                  <motion.div
+                  <m.div
                     key={tag}
                     whileInView={{ scale: 1, opacity: 1 }}
                     initial={{ scale: 0.85, opacity: 0 }}
@@ -147,7 +147,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
                       <TechIcon name={tag as TechName} className="h-4 w-4 text-primary" />
                       <span className="text-foreground font-medium">{tag}</span>
                     </Badge>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </>
@@ -173,7 +173,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
 
       <CardFooter className="pt-2 justify-end">
         {isMobileTablet ? (
-          <motion.div
+          <m.div
             whileInView={{ y: 0, opacity: 1 }}
             initial={{ y: 16, opacity: 0 }}
             viewport={{ once: true, amount: 0.35 }}
@@ -189,7 +189,7 @@ const MobileProjectCard = React.memo(function MobileProjectCard({ project, baseD
             >
               View Demo
             </CtaButton>
-          </motion.div>
+          </m.div>
         ) : (
           <CtaButton
             className="text-primary"
@@ -272,7 +272,7 @@ const SplitViewCard = React.memo(function SplitViewCard({
   } as const;
 
   return (
-    <motion.div
+    <m.div
       className="w-full h-full grid grid-cols-2 gap-6 lg:gap-8"
       initial="hidden"
       animate={controls}
@@ -281,14 +281,14 @@ const SplitViewCard = React.memo(function SplitViewCard({
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
       {/* Left Column - Fixed Image (slide up). Apply fade-in like footer-desktop */}
-      <motion.div
+      <m.div
         className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-foreground/10 p-2 bg-[#CED7DE] dark:bg-[#141926]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.35, ease }}
       >
         {projectImage && (
-          <motion.div className="relative w-full h-full overflow-hidden" variants={imageVariants}>
+          <m.div className="relative w-full h-full overflow-hidden" variants={imageVariants}>
             <Image
               src={projectImage.imageUrl}
               alt={project.title}
@@ -298,34 +298,34 @@ const SplitViewCard = React.memo(function SplitViewCard({
               className="object-contain"
             />
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-transparent" />
-          </motion.div>
+          </m.div>
         )}
-      </motion.div>
+      </m.div>
 
       {/* Right Column - Information with orchestrated animation */}
       <div className="relative flex flex-col justify-center overflow-hidden">
-        <motion.div className="space-y-6" variants={containerVariants} custom={baseDelay}>
+        <m.div className="space-y-6" variants={containerVariants} custom={baseDelay}>
           {/* Card Title: slide-up */}
-          <motion.div className="space-y-3" variants={titleVariants}>
+          <m.div className="space-y-3" variants={titleVariants}>
             <h3 className="text-4xl lg:text-5xl xl:text-6xl font-bold font-headline text-foreground leading-tight">
               {project.title}
             </h3>
             <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/50 rounded-full" />
-          </motion.div>
+          </m.div>
 
           {/* Content: card title and description slide left->right (title first thanks to stagger) */}
-          <motion.div variants={contentVariants}>
-            <motion.p className="text-base lg:text-lg text-muted-foreground leading-relaxed" variants={textLeftVariants}>
+          <m.div variants={contentVariants}>
+            <m.p className="text-base lg:text-lg text-muted-foreground leading-relaxed" variants={textLeftVariants}>
               {project.description}
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
 
           {/* Technologies: badges with stagger */}
-          <motion.div className="space-y-3" variants={contentVariants}>
+          <m.div className="space-y-3" variants={contentVariants}>
             <h4 className="text-sm font-semibold text-foreground/70 uppercase tracking-wider">Technologies</h4>
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
-                <motion.div key={tag} variants={badgeVariants}>
+                <m.div key={tag} variants={badgeVariants}>
                   <Badge
                     variant="outline"
                     className="gap-2 border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors px-3 py-1.5"
@@ -333,13 +333,13 @@ const SplitViewCard = React.memo(function SplitViewCard({
                     <TechIcon name={tag as TechName} className="h-4 w-4 text-primary" />
                     <span className="text-sm font-medium text-foreground">{tag}</span>
                   </Badge>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
 
           {/* CTA Button */}
-          <motion.div className="pt-4" variants={textLeftVariants}>
+          <m.div className="pt-4" variants={textLeftVariants}>
             <CtaButton
               className="text-primary text-base"
               onClick={() => {
@@ -348,10 +348,10 @@ const SplitViewCard = React.memo(function SplitViewCard({
             >
               View Demo
             </CtaButton>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   );
 });
 
@@ -447,9 +447,9 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
   return (
     <section ref={sectionRef} id="portfolio" className={sectionClass}>
       <div className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-        <motion.div className="flex flex-col items-center justify-center space-y-1 text-center mb-8 sm:mb-10 max-w-6xl mx-auto ipadpro:max-w-7xl" initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease }}>
-          <motion.div style={{ overflow: 'hidden' }}>
-            <motion.h2
+        <m.div className="flex flex-col items-center justify-center space-y-1 text-center mb-8 sm:mb-10 max-w-6xl mx-auto ipadpro:max-w-7xl" initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease }}>
+          <m.div style={{ overflow: 'hidden' }}>
+            <m.h2
               style={{ fontSize: 'clamp(1.875rem, 5vw, 3.125rem)' }}
               className="font-bold tracking-tighter font-headline text-foreground relative z-20"
               initial={{ y: 20, opacity: 0 }}
@@ -459,9 +459,9 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
               transition={getFieldTransition(0, 0.45, baseDelay)}
             >
               Projects
-            </motion.h2>
-          </motion.div>
-        </motion.div>
+            </m.h2>
+          </m.div>
+        </m.div>
 
         {/* Responsive Layout: vertical list on mobile/tablet, stack with parallax on desktop */}
         {isMobile ? (
@@ -532,7 +532,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
               </div>
 
               {/* Project Number in bottom left corner */}
-              <motion.div
+              <m.div
                 className="absolute bottom-0 left-0 text-8xl font-bold text-foreground/5 select-none"
                 key={activeIdx}
                 initial={{ opacity: 0, y: 20 }}
@@ -542,7 +542,7 @@ export const PortfolioSection = memo(function PortfolioSection({ setBlockNavigat
                 style={{ zIndex: 30, pointerEvents: 'none' }}
               >
                 {String(activeIdx + 1).padStart(2, '0')}
-              </motion.div>
+              </m.div>
             </div>
           </div>
         )}

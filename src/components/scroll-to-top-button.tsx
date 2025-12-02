@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 export function ScrollToTopButton() {
@@ -52,7 +52,7 @@ export function ScrollToTopButton() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
+        <m.div
           className="fixed bottom-20 right-4 z-50"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -66,7 +66,7 @@ export function ScrollToTopButton() {
           >
             <ArrowUp className="h-4 w-4 text-foreground" />
           </button>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

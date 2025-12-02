@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Transition } from 'framer-motion';
+import { m, type Transition } from 'framer-motion';
 import { memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -105,7 +105,7 @@ export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFra
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] hidden xl:block" aria-hidden>
       {/* Marco superior izquierdo */}
-      <motion.div
+      <m.div
         className="absolute top-0 left-0 h-44 w-44 sm:h-52 sm:w-52"
         variants={cornerFrameVariants.topLeft}
         initial={false}
@@ -117,10 +117,10 @@ export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFra
           <div className="absolute left-0 top-0 h-full w-2 bg-gradient-to-b from-primary/80 via-primary/60 to-transparent" />
           <div className="absolute left-0 top-0 h-2 w-full bg-gradient-to-r from-primary/80 via-primary/60 to-transparent" />
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Marco inferior derecho */}
-      <motion.div
+      <m.div
         className="absolute bottom-0 right-0 h-44 w-44 sm:h-52 sm:w-52"
         variants={cornerFrameVariants.bottomRight}
         initial={false}
@@ -132,7 +132,7 @@ export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFra
           <div className="absolute right-0 bottom-0 h-full w-2 bg-gradient-to-t from-primary/80 via-primary/60 to-transparent" />
           <div className="absolute right-0 bottom-0 h-2 w-full bg-gradient-to-l from-primary/80 via-primary/60 to-transparent" />
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 });

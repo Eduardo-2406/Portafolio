@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useRef, useLayoutEffect, useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { ThemeToggleButton } from '@/components/theme-toggle-button';
 import { navItems, type NavItem } from '@/lib/nav-links';
@@ -121,7 +121,7 @@ export const DesktopHeader = memo(function DesktopHeader({
           
           {/* Animated indicator - only render when we have measurements */}
           {indicatorStyle && (
-            <motion.div
+            <m.div
               className="absolute bg-card/50 border border-primary/40 shadow-sm rounded-xl pointer-events-none"
               initial={false}
               // position at left:0 and animate transform via `x` for GPU acceleration

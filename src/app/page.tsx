@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, memo, useEffect, useRef, lazy, Suspense } from 'react';
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { AnimatePresence, m, type Variants } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for code splitting - reduces initial bundle size
@@ -145,7 +145,7 @@ const AnimatedSocialIcons = memo(function AnimatedSocialIcons({
   return (
     <>
       {SOCIAL_PLATFORMS.map((platform, idx) => (
-        <motion.div
+        <m.div
           key={platform}
           initial={{ opacity: 0, scale: 0 }}
           animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
@@ -156,7 +156,7 @@ const AnimatedSocialIcons = memo(function AnimatedSocialIcons({
           }}
         >
           <SocialIcon platform={platform} url={socialLinks[platform]} variant={variant} />
-        </motion.div>
+        </m.div>
       ))}
     </>
   );
@@ -282,14 +282,14 @@ const DesktopView = memo(function DesktopView({
       )}
 
       {/* Header */}
-      <motion.div 
+      <m.div 
         className="relative z-20"
         initial={{ y: -100, opacity: 0 }}
         animate={contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
         transition={headerSpringTransition}
       >
         <DesktopHeader onNavigate={handleNavigate} activeSection={currentSection} />
-      </motion.div>
+      </m.div>
 
       {/* Contenido principal */}
       <div 
@@ -298,7 +298,7 @@ const DesktopView = memo(function DesktopView({
         style={{ transformStyle: 'preserve-3d' }}
       >
         <AnimatePresence mode="wait" initial>
-          <motion.div
+          <m.div
             key={currentSection}
             className="absolute inset-0 flex"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -323,7 +323,7 @@ const DesktopView = memo(function DesktopView({
             onAnimationComplete={handleAnimationComplete}
           >
             <div className="w-full h-full overflow-hidden">
-              <motion.div
+              <m.div
                 className="w-full h-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: contentCanAnimate ? 1 : 0 }}
@@ -344,7 +344,7 @@ const DesktopView = memo(function DesktopView({
                       contentEnterDelay={ANIMATION_TIMING.CONTENT_ENTER_DELAY}
                     >
                       {currentSection === 0 && (
-                        <motion.div
+                        <m.div
                           className="flex items-center gap-5 pt-4"
                           initial={{ opacity: 0, y: 20, scale: 0.95 }}
                           animate={contentCanAnimate 
@@ -361,7 +361,7 @@ const DesktopView = memo(function DesktopView({
                             contentCanAnimate={contentCanAnimate} 
                             variant="about" 
                           />
-                        </motion.div>
+                        </m.div>
                       )}
                     </PortfolioSection>
                   ) : CurrentComponent === SkillsSection ? (
@@ -395,7 +395,7 @@ const DesktopView = memo(function DesktopView({
                       parentContentVisible={sectionContentVisible}
                     >
                       {currentSection === 0 && (
-                        <motion.div
+                        <m.div
                           className="flex items-center gap-5 pt-4"
                           initial={{ opacity: 0, y: 20, scale: 0.95 }}
                           animate={contentCanAnimate 
@@ -412,21 +412,21 @@ const DesktopView = memo(function DesktopView({
                             contentCanAnimate={contentCanAnimate} 
                             variant="about" 
                           />
-                        </motion.div>
+                        </m.div>
                       )}
                     </CurrentComponent>
                   )
                 }
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
 
       {/* Iconos sociales laterales (secciones intermedias) */}
       <AnimatePresence>
         {currentSection > 0 && currentSection < SECTIONS.length - 1 && (
-          <motion.div
+          <m.div
             className="fixed bottom-1/2 translate-y-1/2 left-4 z-50 flex flex-col gap-4"
             variants={socialContainerVariants}
             initial="hidden"
@@ -436,15 +436,15 @@ const DesktopView = memo(function DesktopView({
             transition={{ delay: 1.8, duration: 0.4 }}
           >
             {SOCIAL_PLATFORMS.map((platform) => (
-              <motion.div key={platform} variants={socialIconVariants}>
+              <m.div key={platform} variants={socialIconVariants}>
                 <SocialIcon
                   platform={platform}
                   url={socialLinks[platform]}
                   variant="lateral"
                 />
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
       
@@ -461,7 +461,7 @@ const DesktopView = memo(function DesktopView({
       {/* Footer lateral para sección de contacto */}
       <AnimatePresence>
         {isInContactSection && contactCardEntered && (
-          <motion.div
+          <m.div
             className="fixed left-4 xl:left-6 2xl:left-8 top-[4rem] bottom-0 z-40 py-8 xl:py-10 flex items-center"
             initial={{ x: -30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -472,7 +472,7 @@ const DesktopView = memo(function DesktopView({
             exit={{ x: -30, opacity: 0, transition: { duration: ANIMATION_TIMING.CONTENT_EXIT_DURATION, ease: ANIMATION_TIMING.EASE_OUT_QUINT } }}
           >
             <DesktopContactFooter />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
@@ -514,18 +514,18 @@ const MobileView = memo(function MobileView({ contentCanAnimate = false }: Mobil
   return (
     <div className="flex flex-col min-h-[100svh]" style={{ touchAction: 'pan-y' }}>
       {/* Header */}
-      <motion.div 
+      <m.div 
         style={{ touchAction: 'auto' }}
         initial={{ y: -100, opacity: 0 }}
         animate={contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
         transition={headerSpringTransition}
       >
         <Header />
-      </motion.div>
+      </m.div>
 
       <main className="flex-1 flex flex-col gap-6" style={{ touchAction: 'auto' }}>
         {/* About Section - altura condicional */}
-        <motion.div
+        <m.div
           animate={{
             height: showFullAbout ? '100dvh' : 'auto',
             overflow: showFullAbout ? 'hidden' : 'visible',
@@ -537,7 +537,7 @@ const MobileView = memo(function MobileView({ contentCanAnimate = false }: Mobil
               <AnimatedSocialIcons contentCanAnimate={contentCanAnimate} variant="lateral" />
             </div>
           </AboutSection>
-        </motion.div>
+        </m.div>
         
         {/* Secciones restantes con scroll reveal */}
         <ScrollRevealSection delay={0.1}>
@@ -604,7 +604,7 @@ export default function Home() {
       <div className="relative min-h-screen">
         <AnimatePresence mode="wait" initial>
           {!appReady ? (
-            <motion.div
+            <m.div
               key="loader"
               className="loader-container fixed inset-0 overflow-hidden bg-background"
               initial={{ opacity: 1 }}
@@ -613,7 +613,7 @@ export default function Home() {
               transition={{ duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO }} // REDUCED from 1.6 for faster LCP
             >
               {/* Telón del loader */}
-              <motion.div
+              <m.div
                 className="absolute inset-0 z-0 bg-background"
                 style={{ originX: 0.5 }}
                 initial={{ scaleX: 1, opacity: 1 }}
@@ -625,7 +625,7 @@ export default function Home() {
               />
 
               {/* Animación del loader */}
-              <motion.div
+              <m.div
                 className="relative z-10"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{
@@ -644,10 +644,10 @@ export default function Home() {
                 <div className="loader">
                   <LoaderSpans />
                 </div>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           ) : (
-            <motion.div 
+            <m.div 
               key="app" 
               className="w-full"
               initial={{ opacity: 0, y: 20 }}
@@ -667,7 +667,7 @@ export default function Home() {
                   contentCanAnimate={contentCanAnimate || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('forceAnim') === '1')}
                 />
               )}
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>

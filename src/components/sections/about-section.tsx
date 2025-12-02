@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useState, useRef, useCallback, memo } from 'react';
 import { cubicBezier } from 'framer-motion';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { TypingAnimation } from '@/registry/magicui/typing-animation';
 
 const AnimatedHeading = memo(function AnimatedHeading({ 
@@ -27,7 +27,7 @@ const AnimatedHeading = memo(function AnimatedHeading({
       
       {/* Animated Name */}
       <div style={{ minHeight: '120px' }} className="flex items-center justify-center">
-        <motion.div
+        <m.div
           className="relative"
           initial={{ opacity: 1, scale: 1 }} // LCP OPTIMIZATION: Start visible
           animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
@@ -47,7 +47,7 @@ const AnimatedHeading = memo(function AnimatedHeading({
             {/* Animated letters */}
             <span className="inline-block">
               {"Hey, I'm ".split('').map((char, i) => (
-                <motion.span
+                <m.span
                   key={i}
                   className="inline-block"
                   initial={{ opacity: 0, y: 10 }} // Reduced movement
@@ -59,12 +59,12 @@ const AnimatedHeading = memo(function AnimatedHeading({
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}
-                </motion.span>
+                </m.span>
               ))}
             </span>
             <span className="inline-block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent">
               {name.split('').map((char, i) => (
-                <motion.span
+                <m.span
                   key={i}
                   className="inline-block"
                   initial={{ opacity: 0, y: 10, rotateX: -45 }}
@@ -76,11 +76,11 @@ const AnimatedHeading = memo(function AnimatedHeading({
                   }}
                 >
                   {char}
-                </motion.span>
+                </m.span>
               ))}
             </span>
           </h2>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Subtitle with typing animation */}
@@ -153,26 +153,26 @@ export const AboutSection = memo(function AboutSection({ children, contentCanAni
       className="w-full h-full min-h-dvh lg:min-h-0 flex flex-col items-center justify-center pb-10 sm:pb-12 md:pb-16 lg:pb-20 scroll-mt-16"
       aria-labelledby="about-heading"
     >
-      <motion.div 
+      <m.div 
         className="w-full px-4 sm:px-8 md:px-12 lg:px-40 xl:px-40 2xl:px-40"
         initial={{ opacity: 0 }}
         animate={{ opacity: contentCanAnimate ? 1 : 0 }}
         transition={{ duration: 0.01 }}
       >
-        <motion.div
+        <m.div
           className="flex flex-col items-center text-center space-y-4 sm:space-y-6 max-w-4xl mx-auto"
           initial="hidden"
           animate={contentCanAnimate ? "visible" : "hidden"}
         >
-          <motion.div
+          <m.div
             initial={headingMotion.initial}
             animate={contentCanAnimate ? headingMotion.animate : { opacity: 0 }}
             transition={headingMotion.transition}
           >
             <AnimatedHeading contentCanAnimate={contentCanAnimate} shouldAnimate={shouldAnimate} />
-          </motion.div>
-          <motion.div style={{ overflow: 'hidden' }} className="max-w-2xl mx-auto">
-            <motion.p
+          </m.div>
+          <m.div style={{ overflow: 'hidden' }} className="max-w-2xl mx-auto">
+            <m.p
               className="text-foreground/85 leading-loose"
               style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)' }}
               initial={descriptionMotion.initial}
@@ -180,13 +180,13 @@ export const AboutSection = memo(function AboutSection({ children, contentCanAni
               transition={descriptionMotion.transition}
             >
               {description}
-            </motion.p>
-          </motion.div>
+            </m.p>
+          </m.div>
           <AnimatePresence>
             {children}
           </AnimatePresence>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   );
 });

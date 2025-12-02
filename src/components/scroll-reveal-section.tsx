@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import React, { ReactNode, memo, useMemo, isValidElement, cloneElement } from 'react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -38,7 +38,7 @@ export const ScrollRevealSection = memo(function ScrollRevealSection({ children,
     : children;
 
   return (
-    <motion.div
+    <m.div
       ref={elementRef as React.RefObject<HTMLDivElement>}
       variants={VARIANTS}
       initial="hidden"
@@ -48,7 +48,7 @@ export const ScrollRevealSection = memo(function ScrollRevealSection({ children,
       style={WILL_CHANGE}
     >
       {content}
-    </motion.div>
+    </m.div>
   );
 });
 

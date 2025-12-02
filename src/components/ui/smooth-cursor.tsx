@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useMemo } from "react";
-import { motion, useSpring } from "framer-motion";
+import { m, useSpring } from "framer-motion";
 
 // ============================================================================
 // TYPES & CONSTANTS
@@ -250,7 +250,7 @@ export function SmoothCursor({ theme = 'light' }: SmoothCursorProps) {
       className="pointer-events-none fixed left-0 top-0 z-[100000]"
       style={{ width: 0, height: 0 }}
     >
-      <motion.div
+      <m.div
         style={{
           position: 'fixed',
           left: 0,
