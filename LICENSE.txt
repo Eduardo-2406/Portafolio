@@ -1,0 +1,123 @@
+REGULAR LICENSE AGREEMENT
+
+Modern Portfolio Template
+
+Copyright (c) 2025. All rights reserved.
+
+This Regular License grants you, the purchaser, an ongoing, non-exclusive, worldwide license to use the digital work (Item) you have purchased.
+
+---
+
+DEFINITIONS
+
+- "Item" refers to the Modern Portfolio Template and all associated files
+- "End Product" refers to a customized implementation of the Item
+- "End User" refers to a user of the End Product
+- "Client" refers to an individual or entity for whom you create an End Product
+
+---
+
+WHAT YOU CAN DO (ALLOWED USES)
+
+1. You may use the Item to create one End Product for yourself or for one Client.
+
+2. You may modify or manipulate the Item. You may combine the Item with other works and make a derivative work from it. The resulting works are subject to the terms of this license.
+
+3. You may use the Item to create an End Product for a Client, and you may transfer that End Product to your Client for any fee. This license is then transferred to your Client.
+
+4. You may use the Item to create multiple End Products for multiple Clients, provided you purchase a separate license for each End Product.
+
+5. You may make the Item available to your employees and contractors for the purpose of creating an End Product on your behalf.
+
+---
+
+WHAT YOU CANNOT DO (PROHIBITED USES)
+
+1. You may NOT redistribute, resell, lease, license, sub-license or offer the Item as-is or with superficial modifications to any third party.
+
+2. You may NOT re-distribute or make available the Item as-is or with superficial modifications as a stock item, template, or source code.
+
+3. You may NOT use the Item in any application allowing an End User to customize the Item, such as "build it yourself" or "theme generators".
+
+4. You may NOT permit End Users to access the source code of the Item or any derivative works.
+
+5. You may NOT use the Item in a logo, trademark, or service mark.
+
+6. You may NOT use the Item in any way that violates applicable laws or regulations.
+
+---
+
+OWNERSHIP AND ATTRIBUTION
+
+1. This license does not transfer ownership of the Item to you. The Item remains the intellectual property of the author.
+
+2. You are not required to attribute the author in your End Product, but attribution is appreciated.
+
+---
+
+WARRANTY AND LIABILITY
+
+1. THE ITEM IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+2. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE ITEM OR THE USE OR OTHER DEALINGS IN THE ITEM.
+
+3. The author is not responsible for any damages, losses, or issues arising from the use or inability to use the Item.
+
+---
+
+SUPPORT AND UPDATES
+
+1. Support is provided as specified at the time of purchase. Basic support typically includes:
+   - Installation assistance
+   - Bug fixes for reported issues
+   - Clarification of documentation
+
+2. Updates and bug fixes may be provided at the author's discretion.
+
+3. Support does not include:
+   - Customization services
+   - Integration with third-party services
+   - Training on web development
+   - Debugging custom code you have added
+
+---
+
+TERMINATION
+
+This license is effective until terminated. Your rights under this license will terminate automatically without notice if you fail to comply with any of its terms.
+
+---
+
+EXTENDED LICENSE
+
+For uses not covered under this Regular License, including but not limited to:
+- Creating multiple End Products with a single purchase
+- Offering the Item as part of a SaaS product
+- Using the Item in products for resale
+
+Please contact the author to purchase an Extended License.
+
+---
+
+CONTACT
+
+For licensing questions or to purchase an Extended License:
+Email: juniormendoza537@gmail.com
+
+---
+
+GENERAL TERMS
+
+1. This license agreement is governed by the laws of the jurisdiction in which the author resides.
+
+2. If any provision of this license is found to be unenforceable or invalid, that provision will be limited or eliminated to the minimum extent necessary so that this license will otherwise remain in full force and effect.
+
+3. This license represents the entire agreement concerning the Item between you and the author.
+
+---
+
+ACKNOWLEDGMENT
+
+By using the Item, you acknowledge that you have read this license agreement, understand it, and agree to be bound by its terms and conditions.
+
+Last Updated: December 2, 2025
