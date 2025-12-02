@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useState, useCallback, useRef, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const NAVIGATION_DELAY = 800; // Animation duration in ms
 const WHEEL_THRESHOLD = 10;
@@ -18,34 +18,43 @@ export function useSectionNavigation(totalSections: number) {
   const lastWheelTimeRef = useRef(0);
 
   // keep refs in sync with state
-  useEffect(() => { currentSectionRef.current = currentSection; }, [currentSection]);
-  useEffect(() => { isNavigatingRef.current = isNavigating; }, [isNavigating]);
-  useEffect(() => { blockNavigationRef.current = blockNavigation; }, [blockNavigation]);
+  useEffect(() => {
+    currentSectionRef.current = currentSection;
+  }, [currentSection]);
+  useEffect(() => {
+    isNavigatingRef.current = isNavigating;
+  }, [isNavigating]);
+  useEffect(() => {
+    blockNavigationRef.current = blockNavigation;
+  }, [blockNavigation]);
 
-  const navigate = useCallback((newIndex: number) => {
-    if (isNavigatingRef.current) return;
-    if (newIndex < 0 || newIndex >= totalSections) return;
+  const navigate = useCallback(
+    (newIndex: number) => {
+      if (isNavigatingRef.current) return;
+      if (newIndex < 0 || newIndex >= totalSections) return;
 
-    // start navigation
-    isNavigatingRef.current = true;
-    setIsNavigating(true);
+      // start navigation
+      isNavigatingRef.current = true;
+      setIsNavigating(true);
 
-    setCurrentSection((prev) => {
-      setDirection(newIndex > prev ? 1 : -1);
-      return newIndex;
-    });
+      setCurrentSection((prev) => {
+        setDirection(newIndex > prev ? 1 : -1);
+        return newIndex;
+      });
 
-    // Clear existing timeout
-    if (navigationTimeoutRef.current !== null) {
-      window.clearTimeout(navigationTimeoutRef.current);
-    }
+      // Clear existing timeout
+      if (navigationTimeoutRef.current !== null) {
+        window.clearTimeout(navigationTimeoutRef.current);
+      }
 
-    navigationTimeoutRef.current = window.setTimeout(() => {
-      isNavigatingRef.current = false;
-      setIsNavigating(false);
-      navigationTimeoutRef.current = null;
-    }, NAVIGATION_DELAY);
-  }, [totalSections]);
+      navigationTimeoutRef.current = window.setTimeout(() => {
+        isNavigatingRef.current = false;
+        setIsNavigating(false);
+        navigationTimeoutRef.current = null;
+      }, NAVIGATION_DELAY);
+    },
+    [totalSections]
+  );
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -59,11 +68,11 @@ export function useSectionNavigation(totalSections: number) {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     if (isMobile) return; // only on desktop
 
     const WHEEL_THROTTLE_DELAY = 100;
-    
+
     // Cache to avoid forced reflows - stores whether an element is scrollable
     const scrollableCache = new WeakMap<HTMLElement, boolean>();
 
@@ -75,9 +84,10 @@ export function useSectionNavigation(totalSections: number) {
 
       // Batch read all layout properties at once to minimize reflows
       const style = window.getComputedStyle(el);
-      const canScrollY = (style.overflowY === 'auto' || style.overflowY === 'scroll');
+      const canScrollY =
+        style.overflowY === "auto" || style.overflowY === "scroll";
       const hasScroll = canScrollY && el.scrollHeight > el.clientHeight;
-      
+
       // Cache the result
       scrollableCache.set(el, hasScroll);
       return hasScroll;
@@ -88,7 +98,9 @@ export function useSectionNavigation(totalSections: number) {
 
       const target = event.target as HTMLElement | null;
       if (target) {
-        const editable = target.closest('textarea, input, [contenteditable=""], [contenteditable="true"]');
+        const editable = target.closest(
+          'textarea, input, [contenteditable=""], [contenteditable="true"]'
+        );
         if (editable) return;
 
         // Check if any parent is scrollable
@@ -115,21 +127,21 @@ export function useSectionNavigation(totalSections: number) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (blockNavigationRef.current || isNavigatingRef.current) return;
 
-      if (event.key === 'ArrowDown') {
+      if (event.key === "ArrowDown") {
         event.preventDefault();
         navigate(currentSectionRef.current + 1);
-      } else if (event.key === 'ArrowUp') {
+      } else if (event.key === "ArrowUp") {
         event.preventDefault();
         navigate(currentSectionRef.current - 1);
       }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [navigate, isMobile]);
 

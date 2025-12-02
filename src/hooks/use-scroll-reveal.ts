@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseScrollRevealOptions {
   threshold?: number;
@@ -13,13 +13,20 @@ type ObserverEntry = {
 };
 
 const OBSERVER_REGISTRY = new Map<string, ObserverEntry>();
-const ELEMENT_HANDLERS = new WeakMap<Element, { onChange: (v: boolean) => void; triggerOnce: boolean; key: string }>();
+const ELEMENT_HANDLERS = new WeakMap<
+  Element,
+  { onChange: (v: boolean) => void; triggerOnce: boolean; key: string }
+>();
 
 function getKey(threshold: number | number[], rootMargin: string) {
   return JSON.stringify({ threshold, rootMargin });
 }
 
-function createObserver(key: string, threshold: number | number[], rootMargin: string) {
+function createObserver(
+  key: string,
+  threshold: number | number[],
+  rootMargin: string
+) {
   const callback: IntersectionObserverCallback = (entries) => {
     for (const entry of entries) {
       const el = entry.target;
@@ -39,14 +46,17 @@ function createObserver(key: string, threshold: number | number[], rootMargin: s
     }
   };
 
-  const observer = new IntersectionObserver(callback, { threshold, rootMargin });
+  const observer = new IntersectionObserver(callback, {
+    threshold,
+    rootMargin,
+  });
   const entry: ObserverEntry = { observer, elements: new Set() };
   OBSERVER_REGISTRY.set(key, entry);
   return entry;
 }
 
 export function useScrollReveal(options: UseScrollRevealOptions = {}) {
-  const { threshold = 0.2, rootMargin = '0px', triggerOnce = true } = options;
+  const { threshold = 0.2, rootMargin = "0px", triggerOnce = true } = options;
 
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef<HTMLElement | null>(null);
@@ -55,7 +65,7 @@ export function useScrollReveal(options: UseScrollRevealOptions = {}) {
   useEffect(() => {
     mountedRef.current = true;
     const el = elementRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
+    if (!el || typeof IntersectionObserver === "undefined") return;
 
     const key = getKey(threshold, rootMargin);
     let registry = OBSERVER_REGISTRY.get(key);

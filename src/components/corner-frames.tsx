@@ -1,11 +1,11 @@
 "use client";
 
-import { m } from 'framer-motion';
-import type { Transition } from 'framer-motion';
-import { memo } from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { m } from "framer-motion";
+import type { Transition } from "framer-motion";
+import { memo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-type FrameState = 'active' | 'rest' | 'aboutFrame' | 'hidden';
+type FrameState = "active" | "rest" | "aboutFrame" | "hidden";
 
 interface CornerFramesProps {
   frameState: FrameState;
@@ -46,15 +46,15 @@ const cornerFrameVariants = {
       transition: baseTransition,
     },
     aboutFrame: {
-      x: '20vw',
-      y: '15vh',
+      x: "20vw",
+      y: "15vh",
       scale: 1.6,
       opacity: 1,
       transition: baseTransition,
     },
     active: {
-      x: '42vw',
-      y: '42vh',
+      x: "42vw",
+      y: "42vh",
       scale: 2,
       opacity: 1,
       transition: activeTransition,
@@ -76,15 +76,15 @@ const cornerFrameVariants = {
       transition: baseTransition,
     },
     aboutFrame: {
-      x: '-20vw',
-      y: '-15vh',
+      x: "-20vw",
+      y: "-15vh",
       scale: 1.6,
       opacity: 1,
       transition: baseTransition,
     },
     active: {
-      x: '-42vw',
-      y: '-42vh',
+      x: "-42vw",
+      y: "-42vh",
       scale: 2,
       opacity: 1,
       transition: activeTransition,
@@ -93,10 +93,20 @@ const cornerFrameVariants = {
 } as const;
 
 // Estilos fuera del render para evitar recrearlos cada vez
-const TOP_LEFT_STYLE = { originX: 0, originY: 0, pointerEvents: 'none' } as const;
-const BOTTOM_RIGHT_STYLE = { originX: 1, originY: 1, pointerEvents: 'none' } as const;
+const TOP_LEFT_STYLE = {
+  originX: 0,
+  originY: 0,
+  pointerEvents: "none",
+} as const;
+const BOTTOM_RIGHT_STYLE = {
+  originX: 1,
+  originY: 1,
+  pointerEvents: "none",
+} as const;
 
-export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFramesProps) {
+export const CornerFrames = memo(function CornerFrames({
+  frameState,
+}: CornerFramesProps) {
   const isMobile = useIsMobile();
 
   // Don't mount the large decorative frames on mobile to avoid
@@ -104,7 +114,10 @@ export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFra
   if (isMobile) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999] hidden xl:block" aria-hidden>
+    <div
+      className="pointer-events-none fixed inset-0 z-[9999] hidden xl:block"
+      aria-hidden
+    >
       {/* Marco superior izquierdo */}
       <m.div
         className="absolute top-0 left-0 h-44 w-44 sm:h-52 sm:w-52"
@@ -138,4 +151,5 @@ export const CornerFrames = memo(function CornerFrames({ frameState }: CornerFra
   );
 });
 
-(CornerFrames as unknown as { displayName?: string }).displayName = 'CornerFrames';
+(CornerFrames as unknown as { displayName?: string }).displayName =
+  "CornerFrames";

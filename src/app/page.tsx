@@ -1,62 +1,118 @@
 "use client";
 
-import { useState, useCallback, memo, useEffect, useRef, lazy, Suspense } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { m } from 'framer-motion';
-import type { Variants } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import {
+  useState,
+  useCallback,
+  memo,
+  useEffect,
+  useRef,
+  lazy,
+  Suspense,
+} from "react";
+import { AnimatePresence } from "framer-motion";
+import { m } from "framer-motion";
+import dynamic from "next/dynamic";
 
 // Dynamic imports for code splitting - reduces initial bundle size
 // AboutSection needs SSR for SEO, but others can be client-only
-const AboutSection = dynamic(() => import('@/components/sections/about-section').then(mod => mod.AboutSection));
+const AboutSection = dynamic(() =>
+  import("@/components/sections/about-section").then((mod) => mod.AboutSection)
+);
 
 // Below-the-fold sections - no SSR needed, reduces initial bundle significantly
 const PortfolioSection = dynamic(
-  () => import('@/components/sections/portfolio-section').then(mod => mod.PortfolioSection),
+  () =>
+    import("@/components/sections/portfolio-section").then(
+      (mod) => mod.PortfolioSection
+    ),
   { ssr: false }
 );
 const SkillsSection = dynamic(
-  () => import('@/components/sections/skills-section').then(mod => mod.SkillsSection),
+  () =>
+    import("@/components/sections/skills-section").then(
+      (mod) => mod.SkillsSection
+    ),
   { ssr: false }
 );
 const ContactSection = dynamic(
-  () => import('@/components/sections/contact-section').then(mod => mod.ContactSection),
+  () =>
+    import("@/components/sections/contact-section").then(
+      (mod) => mod.ContactSection
+    ),
   { ssr: false }
 );
 
 // Layout components - keep SSR for initial paint
-const DesktopHeader = dynamic(() => import('@/components/layout/desktop-header').then(mod => mod.DesktopHeader));
-const Header = dynamic(() => import('@/components/layout/header').then(mod => mod.Header));
-const Footer = dynamic(() => import('@/components/layout/footer').then(mod => mod.Footer));
-const DesktopContactFooter = dynamic(() => import('@/components/layout/footer-desktop-contact').then(mod => mod.DesktopContactFooter));
+const DesktopHeader = dynamic(() =>
+  import("@/components/layout/desktop-header").then((mod) => mod.DesktopHeader)
+);
+const Header = dynamic(() =>
+  import("@/components/layout/header").then((mod) => mod.Header)
+);
+const Footer = dynamic(() =>
+  import("@/components/layout/footer").then((mod) => mod.Footer)
+);
+const DesktopContactFooter = dynamic(() =>
+  import("@/components/layout/footer-desktop-contact").then(
+    (mod) => mod.DesktopContactFooter
+  )
+);
 
 // Client-only components - no SSR needed
-const CornerFrames = dynamic(() => import('@/components/corner-frames').then(mod => mod.CornerFrames), { ssr: false });
-const ScrollToTopButton = dynamic(() => import('@/components/scroll-to-top-button').then(mod => mod.ScrollToTopButton), { ssr: false });
+const CornerFrames = dynamic(
+  () => import("@/components/corner-frames").then((mod) => mod.CornerFrames),
+  { ssr: false }
+);
+const ScrollToTopButton = dynamic(
+  () =>
+    import("@/components/scroll-to-top-button").then(
+      (mod) => mod.ScrollToTopButton
+    ),
+  { ssr: false }
+);
 
 // Optimize below-the-fold UI components
-const ScrollDownIndicator = dynamic(() => import('@/components/ui/scroll-down-indicator').then(mod => mod.ScrollDownIndicator), { ssr: false });
-const SocialIcon = dynamic(() => import('@/components/social-icon').then(mod => mod.SocialIcon), { ssr: false });
+const ScrollDownIndicator = dynamic(
+  () =>
+    import("@/components/ui/scroll-down-indicator").then(
+      (mod) => mod.ScrollDownIndicator
+    ),
+  { ssr: false }
+);
+const SocialIcon = dynamic(
+  () => import("@/components/social-icon").then((mod) => mod.SocialIcon),
+  { ssr: false }
+);
 
 // Keep critical imports
-import type { NavItem } from '@/lib/nav-links';
-import { socialLinks, type SocialPlatform } from '@/lib/data';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useSectionNavigation } from '@/hooks/use-section-navigation';
-import { useTheme } from '@/components/providers/theme-provider';
-import { useCursorStyle } from '@/hooks/use-cursor-style';
-import { useScrollLock } from '@/hooks/use-scroll-lock';
-import { useLoaderAnimation } from '@/hooks/use-loader-animation';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { ScrollRevealSection } from '@/components/scroll-reveal-section';
+import type { NavItem } from "@/lib/nav-links";
+import { socialLinks, type SocialPlatform } from "@/lib/data";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useSectionNavigation } from "@/hooks/use-section-navigation";
+import { useTheme } from "@/components/providers/theme-provider";
+import { useCursorStyle } from "@/hooks/use-cursor-style";
+import { useScrollLock } from "@/hooks/use-scroll-lock";
+import { useLoaderAnimation } from "@/hooks/use-loader-animation";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 
 // Animation constants and variants (extracted for code splitting)
-import { ANIMATION_TIMING, COMPACT_THRESHOLD_PX, LOADER_SPANS_COUNT } from '@/lib/animation-constants';
-import { socialContainerVariants, socialIconVariants, headerSpringTransition } from '@/lib/animation-variants';
+import {
+  ANIMATION_TIMING,
+  COMPACT_THRESHOLD_PX,
+  LOADER_SPANS_COUNT,
+} from "@/lib/animation-constants";
+import {
+  socialContainerVariants,
+  socialIconVariants,
+  headerSpringTransition,
+} from "@/lib/animation-variants";
 
-// Lazy load componentes pesados que solo se usan en desktop
-const SmoothCursor = lazy(() => 
-  import('@/components/ui/smooth-cursor').then(mod => ({ default: mod.SmoothCursor }))
+// Lazy load heavy components used only on desktop
+const SmoothCursor = lazy(() =>
+  import("@/components/ui/smooth-cursor").then((mod) => ({
+    default: mod.SmoothCursor,
+  }))
 );
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -79,26 +135,31 @@ interface MobileViewProps {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const SECTIONS = [
-  { id: 'about', component: AboutSection },
-  { id: 'portfolio', component: PortfolioSection },
-  { id: 'skills', component: SkillsSection },
-  { id: 'contact', component: ContactSection },
+  { id: "about", component: AboutSection },
+  { id: "portfolio", component: PortfolioSection },
+  { id: "skills", component: SkillsSection },
+  { id: "contact", component: ContactSection },
 ] as const;
 
-const SOCIAL_PLATFORMS: SocialPlatform[] = ['github', 'linkedin', 'whatsapp', 'cv'];
+const SOCIAL_PLATFORMS: SocialPlatform[] = [
+  "github",
+  "linkedin",
+  "whatsapp",
+  "cv",
+];
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COMPONENTES AUXILIARES
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Renderiza los iconos sociales con animación escalonada */
-const AnimatedSocialIcons = memo(function AnimatedSocialIcons({ 
-  contentCanAnimate, 
-  variant = 'about',
+const AnimatedSocialIcons = memo(function AnimatedSocialIcons({
+  contentCanAnimate,
+  variant = "about",
   baseDelay = ANIMATION_TIMING.SOCIAL_ICONS_DELAY,
-}: { 
-  contentCanAnimate: boolean; 
-  variant?: 'about' | 'lateral';
+}: {
+  contentCanAnimate: boolean;
+  variant?: "about" | "lateral";
   baseDelay?: number;
 }) {
   return (
@@ -107,14 +168,22 @@ const AnimatedSocialIcons = memo(function AnimatedSocialIcons({
         <m.div
           key={platform}
           initial={{ opacity: 0, scale: 0 }}
-          animate={contentCanAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+          animate={
+            contentCanAnimate
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 0 }
+          }
           transition={{
             duration: 0.6,
             delay: baseDelay + idx * 0.1,
             ease: ANIMATION_TIMING.EASE_OUT_BACK,
           }}
         >
-          <SocialIcon platform={platform} url={socialLinks[platform]} variant={variant} />
+          <SocialIcon
+            platform={platform}
+            url={socialLinks[platform]}
+            variant={variant}
+          />
         </m.div>
       ))}
     </>
@@ -136,13 +205,15 @@ const LoaderSpans = memo(function LoaderSpans() {
 // DESKTOP VIEW
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const DesktopView = memo(function DesktopView({ 
-  onSectionTransitionChange, 
-  onSectionChange, 
-  prefersReducedMotion, 
-  contentCanAnimate = false 
+const DesktopView = memo(function DesktopView({
+  onSectionTransitionChange,
+  onSectionChange,
+  prefersReducedMotion,
+  contentCanAnimate = false,
 }: DesktopViewProps) {
-  const { currentSection, navigate, setBlockNavigation } = useSectionNavigation(SECTIONS.length);
+  const { currentSection, navigate, setBlockNavigation } = useSectionNavigation(
+    SECTIONS.length
+  );
   const { theme } = useTheme();
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeightPx, setContentHeightPx] = useState(0);
@@ -151,19 +222,20 @@ const DesktopView = memo(function DesktopView({
   const previousSectionRef = useRef(currentSection);
   const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const isFirstTransition = useRef(true);
-  
+
   const isInContactSection = currentSection === SECTIONS.length - 1;
-  const isCompactLayout = contentHeightPx > 0 && contentHeightPx < COMPACT_THRESHOLD_PX;
+  const isCompactLayout =
+    contentHeightPx > 0 && contentHeightPx < COMPACT_THRESHOLD_PX;
   const CurrentComponent = SECTIONS[currentSection].component;
   const contentEnterDelayDynamic = ANIMATION_TIMING.CONTENT_ENTER_DELAY;
   const contentEnterDurationDynamic = ANIMATION_TIMING.CONTENT_ENTER_DURATION;
 
-  // Notificar cambios de sección al padre
+  // Notify parent of section changes
   useEffect(() => {
     onSectionChange?.(currentSection);
   }, [currentSection, onSectionChange]);
 
-  // Observar altura del contenedor
+  // Observe container height
   useEffect(() => {
     const el = contentRef.current;
     if (!el) return;
@@ -172,12 +244,12 @@ const DesktopView = memo(function DesktopView({
       const entry = entries[0];
       if (entry) setContentHeightPx(entry.contentRect.height);
     });
-    
+
     resizeObserver.observe(el);
     return () => resizeObserver.disconnect();
   }, []);
 
-  // Manejar transiciones de sección
+  // Handle section transitions
   useEffect(() => {
     const previousSection = previousSectionRef.current;
     previousSectionRef.current = currentSection;
@@ -189,13 +261,13 @@ const DesktopView = memo(function DesktopView({
 
     if (currentSection === previousSection) return;
 
-    // Limpiar timeout previo
+    // Clear previous timeout
     if (transitionTimeoutRef.current) {
       clearTimeout(transitionTimeoutRef.current);
     }
 
     onSectionTransitionChange?.(true);
-    
+
     transitionTimeoutRef.current = setTimeout(() => {
       onSectionTransitionChange?.(false);
     }, ANIMATION_TIMING.TOTAL_TRANSITION_MS);
@@ -207,13 +279,16 @@ const DesktopView = memo(function DesktopView({
     };
   }, [currentSection, onSectionTransitionChange]);
 
-  const handleNavigate = useCallback((href: NavItem["href"]) => {
-    const sectionId = href.slice(1); // Más eficiente que substring(1)
-    const sectionIndex = SECTIONS.findIndex((s) => s.id === sectionId);
-    if (sectionIndex !== -1) {
-      navigate(sectionIndex);
-    }
-  }, [navigate]);
+  const handleNavigate = useCallback(
+    (href: NavItem["href"]) => {
+      const sectionId = href.slice(1);
+      const sectionIndex = SECTIONS.findIndex((s) => s.id === sectionId);
+      if (sectionIndex !== -1) {
+        navigate(sectionIndex);
+      }
+    },
+    [navigate]
+  );
 
   const handleAnimationStart = useCallback(() => {
     setBlockNavigation(true);
@@ -222,7 +297,7 @@ const DesktopView = memo(function DesktopView({
   }, [setBlockNavigation]);
 
   const handleAnimationComplete = useCallback(() => {
-    const shouldBlock = SECTIONS[currentSection]?.id === 'portfolio';
+    const shouldBlock = SECTIONS[currentSection]?.id === "portfolio";
     setBlockNavigation(shouldBlock);
     setSectionContentVisible(true);
   }, [currentSection, setBlockNavigation]);
@@ -241,20 +316,25 @@ const DesktopView = memo(function DesktopView({
       )}
 
       {/* Header */}
-      <m.div 
+      <m.div
         className="relative z-20"
         initial={{ y: -100, opacity: 0 }}
-        animate={contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
+        animate={
+          contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }
+        }
         transition={headerSpringTransition}
       >
-        <DesktopHeader onNavigate={handleNavigate} activeSection={currentSection} />
+        <DesktopHeader
+          onNavigate={handleNavigate}
+          activeSection={currentSection}
+        />
       </m.div>
 
       {/* Contenido principal */}
-      <div 
-        ref={contentRef} 
-        className="relative z-10 flex-1 overflow-hidden" 
-        style={{ transformStyle: 'preserve-3d' }}
+      <div
+        ref={contentRef}
+        className="relative z-10 flex-1 overflow-hidden"
+        style={{ transformStyle: "preserve-3d" }}
       >
         <AnimatePresence mode="wait" initial>
           <m.div
@@ -287,95 +367,98 @@ const DesktopView = memo(function DesktopView({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: contentCanAnimate ? 1 : 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: ANIMATION_TIMING.EASE_OUT_EXPO }}
-                style={{ willChange: 'opacity' }}
+                transition={{
+                  duration: 0.6,
+                  ease: ANIMATION_TIMING.EASE_OUT_EXPO,
+                }}
+                style={{ willChange: "opacity" }}
               >
-                {
-                  CurrentComponent === PortfolioSection ? (
-                    <PortfolioSection
-                      isCompact={isCompactLayout}
-                      footerVisible={isInContactSection}
-                      setBlockNavigation={setBlockNavigation}
-                      navigate={navigate}
-                      currentSection={currentSection}
-                      contentCanAnimate={contentCanAnimate}
-                      parentContentVisible={sectionContentVisible}
-                      contentEnterDelay={ANIMATION_TIMING.CONTENT_ENTER_DELAY}
-                    >
-                      {currentSection === 0 && (
-                        <m.div
-                          className="flex items-center gap-5 pt-4"
-                          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                          animate={contentCanAnimate 
-                            ? { opacity: 1, y: 0, scale: 1 } 
+                {CurrentComponent === PortfolioSection ? (
+                  <PortfolioSection
+                    isCompact={isCompactLayout}
+                    footerVisible={isInContactSection}
+                    setBlockNavigation={setBlockNavigation}
+                    navigate={navigate}
+                    currentSection={currentSection}
+                    contentCanAnimate={contentCanAnimate}
+                    parentContentVisible={sectionContentVisible}
+                    contentEnterDelay={ANIMATION_TIMING.CONTENT_ENTER_DELAY}
+                  >
+                    {currentSection === 0 && (
+                      <m.div
+                        className="flex items-center gap-5 pt-4"
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={
+                          contentCanAnimate
+                            ? { opacity: 1, y: 0, scale: 1 }
                             : { opacity: 0, y: 20, scale: 0.95 }
-                          }
-                          transition={{ 
-                            duration: 0.8, 
-                            delay: ANIMATION_TIMING.SOCIAL_ICONS_DELAY, 
-                            ease: ANIMATION_TIMING.EASE_OUT_QUINT 
-                          }}
-                        >
-                          <AnimatedSocialIcons 
-                            contentCanAnimate={contentCanAnimate} 
-                            variant="about" 
-                          />
-                        </m.div>
-                      )}
-                    </PortfolioSection>
-                  ) : CurrentComponent === SkillsSection ? (
-                    <SkillsSection
-                      isCompact={isCompactLayout}
-                      footerVisible={isInContactSection}
-                      setBlockNavigation={setBlockNavigation}
-                      navigate={navigate}
-                      currentSection={currentSection}
-                      contentCanAnimate={contentCanAnimate}
-                      parentContentVisible={sectionContentVisible}
-                    />
-                  ) : CurrentComponent === ContactSection ? (
-                    <ContactSection
-                      isCompact={isCompactLayout}
-                      footerVisible={isInContactSection}
-                      setBlockNavigation={setBlockNavigation}
-                      navigate={navigate}
-                      currentSection={currentSection}
-                      parentContentVisible={sectionContentVisible}
-                      onCardEntered={setContactCardEntered}
-                    />
-                  ) : (
-                    <CurrentComponent
-                      isCompact={isCompactLayout}
-                      footerVisible={isInContactSection}
-                      setBlockNavigation={setBlockNavigation}
-                      navigate={navigate}
-                      currentSection={currentSection}
-                      contentCanAnimate={contentCanAnimate}
-                      parentContentVisible={sectionContentVisible}
-                    >
-                      {currentSection === 0 && (
-                        <m.div
-                          className="flex items-center gap-5 pt-4"
-                          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                          animate={contentCanAnimate 
-                            ? { opacity: 1, y: 0, scale: 1 } 
+                        }
+                        transition={{
+                          duration: 0.8,
+                          delay: ANIMATION_TIMING.SOCIAL_ICONS_DELAY,
+                          ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+                        }}
+                      >
+                        <AnimatedSocialIcons
+                          contentCanAnimate={contentCanAnimate}
+                          variant="about"
+                        />
+                      </m.div>
+                    )}
+                  </PortfolioSection>
+                ) : CurrentComponent === SkillsSection ? (
+                  <SkillsSection
+                    isCompact={isCompactLayout}
+                    footerVisible={isInContactSection}
+                    setBlockNavigation={setBlockNavigation}
+                    navigate={navigate}
+                    currentSection={currentSection}
+                    contentCanAnimate={contentCanAnimate}
+                    parentContentVisible={sectionContentVisible}
+                  />
+                ) : CurrentComponent === ContactSection ? (
+                  <ContactSection
+                    isCompact={isCompactLayout}
+                    footerVisible={isInContactSection}
+                    setBlockNavigation={setBlockNavigation}
+                    navigate={navigate}
+                    currentSection={currentSection}
+                    parentContentVisible={sectionContentVisible}
+                    onCardEntered={setContactCardEntered}
+                  />
+                ) : (
+                  <CurrentComponent
+                    isCompact={isCompactLayout}
+                    footerVisible={isInContactSection}
+                    setBlockNavigation={setBlockNavigation}
+                    navigate={navigate}
+                    currentSection={currentSection}
+                    contentCanAnimate={contentCanAnimate}
+                    parentContentVisible={sectionContentVisible}
+                  >
+                    {currentSection === 0 && (
+                      <m.div
+                        className="flex items-center gap-5 pt-4"
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={
+                          contentCanAnimate
+                            ? { opacity: 1, y: 0, scale: 1 }
                             : { opacity: 0, y: 20, scale: 0.95 }
-                          }
-                          transition={{ 
-                            duration: 0.8, 
-                            delay: ANIMATION_TIMING.SOCIAL_ICONS_DELAY, 
-                            ease: ANIMATION_TIMING.EASE_OUT_QUINT 
-                          }}
-                        >
-                          <AnimatedSocialIcons 
-                            contentCanAnimate={contentCanAnimate} 
-                            variant="about" 
-                          />
-                        </m.div>
-                      )}
-                    </CurrentComponent>
-                  )
-                }
+                        }
+                        transition={{
+                          duration: 0.8,
+                          delay: ANIMATION_TIMING.SOCIAL_ICONS_DELAY,
+                          ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+                        }}
+                      >
+                        <AnimatedSocialIcons
+                          contentCanAnimate={contentCanAnimate}
+                          variant="about"
+                        />
+                      </m.div>
+                    )}
+                  </CurrentComponent>
+                )}
               </m.div>
             </div>
           </m.div>
@@ -406,13 +489,17 @@ const DesktopView = memo(function DesktopView({
           </m.div>
         )}
       </AnimatePresence>
-      
+
       {/* Indicador de scroll */}
       <AnimatePresence>
         {currentSection < SECTIONS.length - 1 && (
-          <ScrollDownIndicator 
-            onClick={handleScrollDown} 
-            delay={currentSection === 0 ? ANIMATION_TIMING.SCROLL_INDICATOR_DELAY_ABOUT : 0}
+          <ScrollDownIndicator
+            onClick={handleScrollDown}
+            delay={
+              currentSection === 0
+                ? ANIMATION_TIMING.SCROLL_INDICATOR_DELAY_ABOUT
+                : 0
+            }
           />
         )}
       </AnimatePresence>
@@ -426,9 +513,20 @@ const DesktopView = memo(function DesktopView({
             animate={{ x: 0, opacity: 1 }}
             // Apply a larger extra delay so footer container and its content
             // enter noticeably after the contact card completes.
-            transition={{ duration: contentEnterDurationDynamic, delay: 0.5, ease: ANIMATION_TIMING.EASE_OUT_QUINT }}
-            // Salida: duración 0.45s para coincidir con ContactSection exit
-            exit={{ x: -30, opacity: 0, transition: { duration: ANIMATION_TIMING.CONTENT_EXIT_DURATION, ease: ANIMATION_TIMING.EASE_OUT_QUINT } }}
+            transition={{
+              duration: contentEnterDurationDynamic,
+              delay: 0.5,
+              ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+            }}
+            // Exit: 0.45s duration to match ContactSection exit
+            exit={{
+              x: -30,
+              opacity: 0,
+              transition: {
+                duration: ANIMATION_TIMING.CONTENT_EXIT_DURATION,
+                ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+              },
+            }}
           >
             <DesktopContactFooter />
           </m.div>
@@ -442,7 +540,9 @@ const DesktopView = memo(function DesktopView({
 // MOBILE VIEW
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const MobileView = memo(function MobileView({ contentCanAnimate = false }: MobileViewProps) {
+const MobileView = memo(function MobileView({
+  contentCanAnimate = false,
+}: MobileViewProps) {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showFullAbout, setShowFullAbout] = useState(true);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -457,9 +557,9 @@ const MobileView = memo(function MobileView({ contentCanAnimate = false }: Mobil
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
@@ -467,61 +567,74 @@ const MobileView = memo(function MobileView({ contentCanAnimate = false }: Mobil
   }, [hasScrolled]);
 
   const handleScrollToPortfolio = useCallback(() => {
-    document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById("portfolio")
+      ?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   return (
-    <div className="flex flex-col min-h-[100svh]" style={{ touchAction: 'pan-y' }}>
+    <div
+      className="flex flex-col min-h-[100svh]"
+      style={{ touchAction: "pan-y" }}
+    >
       {/* Header */}
-      <m.div 
-        style={{ touchAction: 'auto' }}
+      <m.div
+        style={{ touchAction: "auto" }}
         initial={{ y: -100, opacity: 0 }}
-        animate={contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
+        animate={
+          contentCanAnimate ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }
+        }
         transition={headerSpringTransition}
       >
         <Header />
       </m.div>
 
-      <main className="flex-1 flex flex-col gap-6" style={{ touchAction: 'auto' }}>
+      <main
+        className="flex-1 flex flex-col gap-6"
+        style={{ touchAction: "auto" }}
+      >
         {/* About Section - altura condicional */}
         <m.div
           animate={{
-            height: showFullAbout ? '100dvh' : 'auto',
-            overflow: showFullAbout ? 'hidden' : 'visible',
+            height: showFullAbout ? "100dvh" : "auto",
+            overflow: showFullAbout ? "hidden" : "visible",
           }}
           transition={{ duration: 0.4, ease: ANIMATION_TIMING.EASE_OUT_QUINT }}
         >
           <AboutSection contentCanAnimate={contentCanAnimate}>
             <div className="flex items-center gap-6 pt-4">
-              <AnimatedSocialIcons contentCanAnimate={contentCanAnimate} variant="lateral" />
+              <AnimatedSocialIcons
+                contentCanAnimate={contentCanAnimate}
+                variant="lateral"
+              />
             </div>
           </AboutSection>
         </m.div>
-        
+
         {/* Secciones restantes con scroll reveal */}
         <ScrollRevealSection delay={0.1}>
           <PortfolioSection isMobileOverride />
         </ScrollRevealSection>
-        
+
         <ScrollRevealSection delay={0.15}>
           <SkillsSection />
         </ScrollRevealSection>
-        
+
         <ScrollRevealSection delay={0.2}>
           <ContactSection />
         </ScrollRevealSection>
       </main>
-      
+
       {/* Indicador de scroll */}
       <AnimatePresence mode="wait">
         {!hasScrolled && (
-          <ScrollDownIndicator 
-            delay={ANIMATION_TIMING.SCROLL_INDICATOR_DELAY_MOBILE} 
-            onClick={handleScrollToPortfolio} 
+          <ScrollDownIndicator
+            delay={ANIMATION_TIMING.SCROLL_INDICATOR_DELAY_MOBILE}
+            onClick={handleScrollToPortfolio}
           />
         )}
       </AnimatePresence>
-      
+
       <Footer />
       <ScrollToTopButton />
     </div>
@@ -537,23 +650,28 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const [sectionTransitioning, setSectionTransitioning] = useState(false);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  
-  // Hooks de animación y efectos secundarios
-  const { appReady, loaderFramesReleased, loaderFramesToCenter, contentCanAnimate } = useLoaderAnimation();
+
+  // Animation hooks and side effects
+  const {
+    appReady,
+    loaderFramesReleased,
+    loaderFramesToCenter,
+    contentCanAnimate,
+  } = useLoaderAnimation();
   useCursorStyle(isMobileView);
   useScrollLock(appReady, isMobileView);
 
-  // Calcular estado de marcos de forma declarativa
+  // Calculate frame state declaratively
   const frameState = (() => {
-    if (prefersReducedMotion) return 'rest';
+    if (prefersReducedMotion) return "rest";
     if (!appReady) {
-      if (loaderFramesReleased) return 'aboutFrame';
-      if (loaderFramesToCenter) return 'active';
-      return 'rest';
+      if (loaderFramesReleased) return "aboutFrame";
+      if (loaderFramesToCenter) return "active";
+      return "rest";
     }
-    if (sectionTransitioning) return 'active';
-    return currentSectionIndex === 0 ? 'aboutFrame' : 'rest';
-  })() as 'active' | 'rest' | 'aboutFrame' | 'hidden';
+    if (sectionTransitioning) return "active";
+    return currentSectionIndex === 0 ? "aboutFrame" : "rest";
+  })() as "active" | "rest" | "aboutFrame" | "hidden";
 
   return (
     <>
@@ -563,7 +681,7 @@ export default function Home() {
       {/* Cursor personalizado (solo desktop, lazy loaded) */}
       {!isMobileView && (
         <Suspense fallback={null}>
-          <SmoothCursor theme={prefersReducedMotion ? 'light' : 'dark'} />
+          <SmoothCursor theme={prefersReducedMotion ? "light" : "dark"} />
         </Suspense>
       )}
 
@@ -590,7 +708,10 @@ export default function Home() {
                   scaleX: loaderFramesReleased ? 0 : 1,
                   opacity: loaderFramesReleased ? 0 : 1,
                 }}
-                transition={{ duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO }} // REDUCED from 1.6 for faster LCP
+                transition={{
+                  duration: 1,
+                  ease: ANIMATION_TIMING.EASE_OUT_EXPO,
+                }} // REDUCED from 1.6 for faster LCP
               />
 
               {/* Animación del loader */}
@@ -602,12 +723,20 @@ export default function Home() {
                   opacity: loaderFramesReleased ? 0 : 1,
                 }}
                 transition={{
-                  scale: loaderFramesReleased 
+                  scale: loaderFramesReleased
                     ? { duration: 1, ease: ANIMATION_TIMING.EASE_OUT_EXPO } // REDUCED from 1.4
-                    : { duration: 1.2, delay: 1.4, ease: ANIMATION_TIMING.EASE_OUT_BACK },
+                    : {
+                        duration: 1.2,
+                        delay: 1.4,
+                        ease: ANIMATION_TIMING.EASE_OUT_BACK,
+                      },
                   opacity: loaderFramesReleased
                     ? { duration: 1, ease: ANIMATION_TIMING.EASE_OUT_QUINT } // REDUCED from 1.4
-                    : { duration: 1.2, delay: 1.4, ease: ANIMATION_TIMING.EASE_OUT_QUINT },
+                    : {
+                        duration: 1.2,
+                        delay: 1.4,
+                        ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+                      },
                 }}
               >
                 <div className="loader">
@@ -616,24 +745,42 @@ export default function Home() {
               </m.div>
             </m.div>
           ) : (
-            <m.div 
-              key="app" 
+            <m.div
+              key="app"
               className="w-full"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ 
-                opacity: contentCanAnimate ? 1 : 0, 
-                y: contentCanAnimate ? 0 : 20 
+              animate={{
+                opacity: contentCanAnimate ? 1 : 0,
+                y: contentCanAnimate ? 0 : 20,
               }}
-              transition={{ duration: 0.8, delay: 0.2, ease: ANIMATION_TIMING.EASE_OUT_QUINT }}
+              transition={{
+                duration: 0.8,
+                delay: 0.2,
+                ease: ANIMATION_TIMING.EASE_OUT_QUINT,
+              }}
             >
               {isMobileView ? (
-                <MobileView contentCanAnimate={contentCanAnimate || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('forceAnim') === '1')} />
+                <MobileView
+                  contentCanAnimate={
+                    contentCanAnimate ||
+                    (typeof window !== "undefined" &&
+                      new URLSearchParams(window.location.search).get(
+                        "forceAnim"
+                      ) === "1")
+                  }
+                />
               ) : (
                 <DesktopView
                   onSectionTransitionChange={setSectionTransitioning}
                   onSectionChange={setCurrentSectionIndex}
                   prefersReducedMotion={prefersReducedMotion}
-                  contentCanAnimate={contentCanAnimate || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('forceAnim') === '1')}
+                  contentCanAnimate={
+                    contentCanAnimate ||
+                    (typeof window !== "undefined" &&
+                      new URLSearchParams(window.location.search).get(
+                        "forceAnim"
+                      ) === "1")
+                  }
                 />
               )}
             </m.div>

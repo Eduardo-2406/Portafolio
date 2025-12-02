@@ -1,8 +1,8 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
@@ -12,6 +12,10 @@ export function cn(...inputs: ClassValue[]) {
  * @param maxSize - Maximum size (in rem)
  * @returns CSS clamp() string
  */
-export function clampSize(minSize: number, vwSize: number, maxSize: number): string {
-  return `clamp(${minSize}rem, ${vwSize}vw, ${maxSize}rem)`
+export function clampSize(
+  minSize: number,
+  vwSize: number,
+  maxSize: number
+): string {
+  return `clamp(${minSize}rem, ${vwSize}vw, ${maxSize}rem)`;
 }

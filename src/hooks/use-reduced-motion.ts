@@ -1,30 +1,35 @@
-import { useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from "react";
 
 let _reducedMotionMql: MediaQueryList | null = null;
 
 function getReducedMotionMql(): MediaQueryList | null {
-  if (typeof window === 'undefined' || typeof window.matchMedia === 'undefined') return null;
+  if (typeof window === "undefined" || typeof window.matchMedia === "undefined")
+    return null;
   if (_reducedMotionMql === null) {
-    _reducedMotionMql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    _reducedMotionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
   }
   return _reducedMotionMql;
 }
 
 function addMqlListener(mql: MediaQueryList, cb: () => void) {
-  if ('addEventListener' in mql) {
-    mql.addEventListener('change', cb as EventListener);
+  if ("addEventListener" in mql) {
+    mql.addEventListener("change", cb as EventListener);
   } else {
     // Legacy Safari: fall back to addListener typed as unknown to avoid `any`
-    (mql as unknown as { addListener: (fn: () => void) => void }).addListener(cb);
+    (mql as unknown as { addListener: (fn: () => void) => void }).addListener(
+      cb
+    );
   }
 }
 
 function removeMqlListener(mql: MediaQueryList, cb: () => void) {
-  if ('removeEventListener' in mql) {
-    mql.removeEventListener('change', cb as EventListener);
+  if ("removeEventListener" in mql) {
+    mql.removeEventListener("change", cb as EventListener);
   } else {
     // Legacy Safari: fall back to removeListener typed as unknown to avoid `any`
-    (mql as unknown as { removeListener: (fn: () => void) => void }).removeListener(cb);
+    (
+      mql as unknown as { removeListener: (fn: () => void) => void }
+    ).removeListener(cb);
   }
 }
 

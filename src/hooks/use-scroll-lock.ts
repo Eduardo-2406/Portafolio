@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from "react";
 
 /**
  * Locks page scroll when necessary (during loader or for desktop section navigation).
@@ -11,16 +11,16 @@ export function useScrollLock(appReady: boolean, isMobileView: boolean) {
   const prevOverflowRef = useRef<string | null>(null);
 
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const el = document.body;
 
     if (prevOverflowRef.current === null) {
-      prevOverflowRef.current = el.style.overflow || '';
+      prevOverflowRef.current = el.style.overflow || "";
     }
 
     const shouldLock = !appReady || !isMobileView;
-    const desired = shouldLock ? 'hidden' : prevOverflowRef.current || '';
+    const desired = shouldLock ? "hidden" : prevOverflowRef.current || "";
 
     if (el.style.overflow !== desired) {
       el.style.overflow = desired;
@@ -28,7 +28,10 @@ export function useScrollLock(appReady: boolean, isMobileView: boolean) {
 
     return () => {
       // restore original value
-      if (prevOverflowRef.current !== null && el.style.overflow !== prevOverflowRef.current) {
+      if (
+        prevOverflowRef.current !== null &&
+        el.style.overflow !== prevOverflowRef.current
+      ) {
         el.style.overflow = prevOverflowRef.current;
       }
     };

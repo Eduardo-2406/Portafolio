@@ -63,11 +63,24 @@ export function TypingAnimation({
     <span className={className} aria-label={full}>
       {full.slice(0, count)}
       {showCursor && (
-        <span className="inline-block w-[1ch] -translate-y-px animate-caret">|</span>
+        <span className="inline-block w-[1ch] -translate-y-px animate-caret">
+          |
+        </span>
       )}
       <style jsx>{`
-        @keyframes caretBlink { 0%, 60% { opacity: 1 } 60.1%, 100% { opacity: 0 } }
-        .animate-caret { animation: caretBlink 1s step-end infinite; }
+        @keyframes caretBlink {
+          0%,
+          60% {
+            opacity: 1;
+          }
+          60.1%,
+          100% {
+            opacity: 0;
+          }
+        }
+        .animate-caret {
+          animation: caretBlink 1s step-end infinite;
+        }
       `}</style>
     </span>
   );

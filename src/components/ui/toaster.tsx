@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React, { useMemo } from "react"
-import { useToast } from "@/hooks/use-toast"
+import React, { useMemo } from "react";
+import { useToast } from "@/hooks/use-toast";
 import {
   Toast,
   ToastClose,
@@ -9,10 +9,10 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
+} from "@/components/ui/toast";
 
 export const Toaster = React.memo(function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   const toastItems = useMemo(
     () =>
@@ -28,16 +28,16 @@ export const Toaster = React.memo(function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       }),
     [toasts]
-  )
+  );
 
   return (
     <ToastProvider>
       {toastItems}
       <ToastViewport />
     </ToastProvider>
-  )
-})
-Toaster.displayName = 'Toaster'
+  );
+});
+Toaster.displayName = "Toaster";

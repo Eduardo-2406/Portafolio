@@ -1,35 +1,39 @@
 "use client";
 
-import React, { useMemo, memo, type ReactNode } from 'react';
-import { skills, type Skill } from '@/lib/data';
-import { TechIcon } from '../tech-icon';
-import { m } from 'framer-motion';
-import { cubicBezier } from 'framer-motion';
-import { useAnimation } from 'framer-motion';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { EASE_OUT_QUINT_BEZIER } from '@/lib/animation-constants';
+import React, { useMemo, memo, type ReactNode } from "react";
+import { skills, type Skill } from "@/lib/data";
+import { TechIcon } from "../tech-icon";
+import { m } from "framer-motion";
+import { cubicBezier } from "framer-motion";
+import { useAnimation } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { EASE_OUT_QUINT_BEZIER } from "@/lib/animation-constants";
 
 const ease = EASE_OUT_QUINT_BEZIER;
 const entranceEase = cubicBezier(0.25, 0.46, 0.45, 0.94);
 // hoverEase removed: icon hover now uses CSS transform transitions (Tailwind) instead of framer-motion ease
 
 // Skill categorization (static constant)
-const skillCategories: Record<'frontend'|'backend', string[]> = {
-  frontend: ['JavaScript', 'React', 'Next.js', 'Tailwind CSS', 'HTML5', 'CSS'],
-  backend: ['Node.js', 'Firebase', 'PostgreSQL', 'C#', 'SQL Server'],
+const skillCategories: Record<"frontend" | "backend", string[]> = {
+  frontend: ["JavaScript", "React", "Next.js", "Tailwind CSS", "HTML5", "CSS"],
+  backend: ["Node.js", "Firebase", "PostgreSQL", "C#", "SQL Server"],
 };
 
 const getSkillLevel = (level: number): string => {
-  if (level >= 50) return 'Intermediate';
-  if (level >= 30) return 'Basic+';
-  return 'Basic';
+  if (level >= 50) return "Intermediate";
+  if (level >= 30) return "Basic+";
+  return "Basic";
 };
 
 // helper removed: delays handled per-group via `groupDelay` passed to SkillCard
 
 const cardItemVariants = {
   hidden: { opacity: 0, scale: 0 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: cubicBezier(0.34, 1.56, 0.64, 1) } },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.6, ease: cubicBezier(0.34, 1.56, 0.64, 1) },
+  },
 } as const;
 
 // containerVariants removed (unused)
@@ -41,45 +45,83 @@ const headerContainerVariants = {
 
 const headerItemVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: entranceEase } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: entranceEase },
+  },
 } as const;
 
-const SkillCard = memo(function SkillCard({ name, level, parentVisible = false, entryDelay }: Skill & { parentVisible?: boolean } & { entryDelay?: number }) {
+const SkillCard = memo(function SkillCard({
+  name,
+  level,
+  parentVisible = false,
+  entryDelay,
+}: Skill & { parentVisible?: boolean } & { entryDelay?: number }) {
   const levelLabel = getSkillLevel(level);
   const isMobile = useIsMobile();
   // groupDelay available for future tuning; not used directly here
   return (
     <m.div
       className="group relative"
-      initial={'hidden'}
+      initial={"hidden"}
       variants={cardItemVariants}
-      animate={!isMobile ? (parentVisible ? 'visible' : 'hidden') : undefined}
-      transition={!isMobile && entryDelay !== undefined ? { delay: entryDelay, duration: 0.34, ease: cubicBezier(0.34, 1.56, 0.64, 1) } : undefined}
-      whileInView={isMobile ? 'visible' : undefined}
+      animate={!isMobile ? (parentVisible ? "visible" : "hidden") : undefined}
+      transition={
+        !isMobile && entryDelay !== undefined
+          ? {
+              delay: entryDelay,
+              duration: 0.34,
+              ease: cubicBezier(0.34, 1.56, 0.64, 1),
+            }
+          : undefined
+      }
+      whileInView={isMobile ? "visible" : undefined}
       viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
-      style={{ transformStyle: 'preserve-3d' }}
+      style={{ transformStyle: "preserve-3d" }}
     >
       <div className="relative h-full rounded-lg border border-foreground/10 bg-card/50 p-3">
         {/* Top border progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-lg overflow-hidden bg-foreground/5">
           <m.div
             className="h-full bg-gradient-to-r from-primary via-primary to-primary/70"
-            variants={{ hidden: { width: 0 }, visible: { width: `${level}%`, transition: { duration: 1.0, ease: entranceEase } } }}
+            variants={{
+              hidden: { width: 0 },
+              visible: {
+                width: `${level}%`,
+                transition: { duration: 1.0, ease: entranceEase },
+              },
+            }}
           />
         </div>
 
         {/* No hover beam: only icon movement on hover */}
-        
+
         <div className="relative flex flex-col items-center gap-3 text-center group">
           {/* Icon: animation activated on card hover (group class) */}
           <div className="relative transform transition-transform duration-300 group-hover:-translate-y-1">
-            <TechIcon name={name} className="h-9 w-9 text-foreground transition-transform duration-300" />
+            <TechIcon
+              name={name}
+              className="h-9 w-9 text-foreground transition-transform duration-300"
+            />
           </div>
 
           {/* Technology name and badge: centered and without hover affecting layout */}
           <div className="space-y-1 text-center py-1">
-            <h3 className={`font-semibold text-foreground transition-colors duration-200 ${name === 'Node.js' ? 'text-lg lg:text-xl' : 'text-base'}`}>{name}</h3>
-            <span className={`inline-block px-2 py-0.5 ${levelLabel === 'Basic' ? 'text-sm' : 'text-[10px]'} font-medium rounded-md bg-foreground/5 text-foreground/60`}>{levelLabel}</span>
+            <h3
+              className={`font-semibold text-foreground transition-colors duration-200 ${
+                name === "Node.js" ? "text-lg lg:text-xl" : "text-base"
+              }`}
+            >
+              {name}
+            </h3>
+            <span
+              className={`inline-block px-2 py-0.5 ${
+                levelLabel === "Basic" ? "text-sm" : "text-[10px]"
+              } font-medium rounded-md bg-foreground/5 text-foreground/60`}
+            >
+              {levelLabel}
+            </span>
           </div>
         </div>
 
@@ -100,10 +142,24 @@ type SkillsSectionProps = {
   contentCanAnimate?: boolean;
 };
 
-export const SkillsSection = memo(function SkillsSection({ parentContentVisible }: SkillsSectionProps) {
+export const SkillsSection = memo(function SkillsSection({
+  parentContentVisible,
+}: SkillsSectionProps) {
   // Organize skills by category (skills is a static import)
-  const frontendSkills = useMemo(() => skills.filter(skill => skillCategories.frontend.includes(skill.name as string)), []);
-  const backendSkills = useMemo(() => skills.filter(skill => skillCategories.backend.includes(skill.name as string)), []);
+  const frontendSkills = useMemo(
+    () =>
+      skills.filter((skill) =>
+        skillCategories.frontend.includes(skill.name as string)
+      ),
+    []
+  );
+  const backendSkills = useMemo(
+    () =>
+      skills.filter((skill) =>
+        skillCategories.backend.includes(skill.name as string)
+      ),
+    []
+  );
 
   // (Removed old timeout-based states — sequencing handled with animation controls below)
 
@@ -128,48 +184,57 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
   // Sequence when parentContentVisible becomes true (desktop)
   const [isMounted, setIsMounted] = React.useState(false);
   const animationRef = React.useRef<boolean>(false);
-  
+
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
   React.useEffect(() => {
     if (!isMounted) return;
-    
+
     // Mark that we're starting a new animation sequence
     animationRef.current = true;
-    
+
     (async () => {
       if (!parentContentVisible || isMobile) {
         // reset
-        if (animationRef.current) await mainTitleControls.start('hidden');
-        if (animationRef.current) await frontendHeaderControls.start('hidden');
-        if (animationRef.current) await frontendCardsControls.start('hidden');
-        if (animationRef.current) await backendHeaderControls.start('hidden');
-        if (animationRef.current) await backendCardsControls.start('hidden');
+        if (animationRef.current) await mainTitleControls.start("hidden");
+        if (animationRef.current) await frontendHeaderControls.start("hidden");
+        if (animationRef.current) await frontendCardsControls.start("hidden");
+        if (animationRef.current) await backendHeaderControls.start("hidden");
+        if (animationRef.current) await backendCardsControls.start("hidden");
         return;
       }
 
       // 1) Main title
-      if (animationRef.current) await mainTitleControls.start('visible');
+      if (animationRef.current) await mainTitleControls.start("visible");
 
       // 2) Frontend header (title + subtitle)
-      if (animationRef.current) await frontendHeaderControls.start('visible');
+      if (animationRef.current) await frontendHeaderControls.start("visible");
       // allow frontend cards to start (cards themselves use parentVisible and entryDelay)
       if (animationRef.current) setFrontendCardsStart(true);
       // wait until frontend cards complete before showing backend header
       const frontendCount = Math.max(0, frontendSkills.length);
-      const lastFrontendDelay = (headerDuration + titleToCardsBase) + (Math.max(0, frontendCount - 1) * cardStagger);
-      const frontendFinishMs = Math.ceil((lastFrontendDelay + cardDuration) * 1000 + 40);
-      if (animationRef.current) await new Promise((r) => setTimeout(r, frontendFinishMs));
+      const lastFrontendDelay =
+        headerDuration +
+        titleToCardsBase +
+        Math.max(0, frontendCount - 1) * cardStagger;
+      const frontendFinishMs = Math.ceil(
+        (lastFrontendDelay + cardDuration) * 1000 + 40
+      );
+      if (animationRef.current)
+        await new Promise((r) => setTimeout(r, frontendFinishMs));
 
       // 4) Backend header
-      if (animationRef.current) await backendHeaderControls.start('visible');
+      if (animationRef.current) await backendHeaderControls.start("visible");
 
       // allow backend cards to start
       if (animationRef.current) setBackendCardsStart(true);
       // wait a short moment to let header animation begin
-      if (animationRef.current) await new Promise((r) => setTimeout(r, Math.ceil(headerDuration * 1000)));
+      if (animationRef.current)
+        await new Promise((r) =>
+          setTimeout(r, Math.ceil(headerDuration * 1000))
+        );
     })();
 
     return () => {
@@ -177,19 +242,38 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
       animationRef.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted, parentContentVisible, isMobile, frontendSkills.length, headerDuration, titleToCardsBase, cardStagger, cardDuration]);
+  }, [
+    isMounted,
+    parentContentVisible,
+    isMobile,
+    frontendSkills.length,
+    headerDuration,
+    titleToCardsBase,
+    cardStagger,
+    cardDuration,
+  ]);
 
   return (
-    <section id="skills" className="w-full h-full flex flex-col items-center justify-center pt-8 pb-32 sm:pt-12 sm:pb-32 md:pt-16 md:pb-32 lg:pt-16 lg:pb-32 scroll-mt-16">
+    <section
+      id="skills"
+      className="w-full h-full flex flex-col items-center justify-center pt-8 pb-32 sm:pt-12 sm:pb-32 md:pt-16 md:pb-32 lg:pt-16 lg:pb-32 scroll-mt-16"
+    >
       <div className="w-full px-4 sm:px-8 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         {/* Main Title */}
         <m.div className="flex flex-col items-center justify-center space-y-1 text-center mb-12 sm:mb-16 max-w-4xl mx-auto">
-          <m.div style={{ overflow: 'hidden' }}>
+          <m.div style={{ overflow: "hidden" }}>
             <m.h2
-              style={{ fontSize: 'clamp(1.875rem, 5vw, 3.125rem)' }}
+              style={{ fontSize: "clamp(1.875rem, 5vw, 3.125rem)" }}
               className="font-bold tracking-tighter font-headline text-foreground z-20"
-              initial={{ y: '100%', opacity: 0 }}
-              variants={{ hidden: { y: '100%', opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease } } }}
+              initial={{ y: "100%", opacity: 0 }}
+              variants={{
+                hidden: { y: "100%", opacity: 0 },
+                visible: {
+                  y: 0,
+                  opacity: 1,
+                  transition: { duration: 0.5, ease },
+                },
+              }}
               animate={!isMobile ? mainTitleControls : undefined}
               whileInView={isMobile ? { y: 0, opacity: 1 } : undefined}
               viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
@@ -203,27 +287,41 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
           {/* Frontend Section */}
           <div>
             <div className="mb-6">
+              <m.div
+                initial="hidden"
+                variants={headerContainerVariants}
+                animate={!isMobile ? frontendHeaderControls : undefined}
+                whileInView={isMobile ? "visible" : undefined}
+                viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              >
                 <m.div
-                  initial="hidden"
-                  variants={headerContainerVariants}
-                  animate={!isMobile ? frontendHeaderControls : undefined}
-                  whileInView={isMobile ? 'visible' : undefined}
-                  viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+                  className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3"
+                  variants={headerItemVariants}
                 >
-                  <m.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants}>
-                    <span className="inline-block w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
-                    Frontend Development
-                  </m.div>
-                  <m.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.06, ease }}>
-                    UI Design and Development
-                  </m.div>
+                  <span className="inline-block w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
+                  Frontend Development
                 </m.div>
+                <m.div
+                  className="text-base lg:text-lg text-muted-foreground ml-7"
+                  variants={headerItemVariants}
+                  transition={{ duration: 0.38, delay: 0.06, ease }}
+                >
+                  UI Design and Development
+                </m.div>
+              </m.div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6">
               {frontendSkills.map((skill, idx) => (
-                  // entryDelay: base + idx*stagger (base chosen to follow header timing)
-                  <SkillCard key={skill.name} {...skill} parentVisible={frontendCardsStart} entryDelay={(headerDuration + titleToCardsBase) + idx * cardStagger} />
-                ))}
+                // entryDelay: base + idx*stagger (base chosen to follow header timing)
+                <SkillCard
+                  key={skill.name}
+                  {...skill}
+                  parentVisible={frontendCardsStart}
+                  entryDelay={
+                    headerDuration + titleToCardsBase + idx * cardStagger
+                  }
+                />
+              ))}
             </div>
           </div>
 
@@ -234,15 +332,22 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
                 initial="hidden"
                 variants={headerContainerVariants}
                 animate={!isMobile ? backendHeaderControls : undefined}
-                whileInView={isMobile ? 'visible' : undefined}
+                whileInView={isMobile ? "visible" : undefined}
                 viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
               >
-                <m.div className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3" variants={headerItemVariants} transition={{ duration: 0.36, delay: 0.06 }}>
+                <m.div
+                  className="text-2xl lg:text-3xl font-bold text-foreground mb-2 flex items-center gap-3"
+                  variants={headerItemVariants}
+                  transition={{ duration: 0.36, delay: 0.06 }}
+                >
                   <span className="inline-block w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
                   Backend & Database
                 </m.div>
-                <m.div className="text-base lg:text-lg text-muted-foreground ml-7" variants={headerItemVariants} transition={{ duration: 0.38, delay: 0.08 }}
-                  whileInView={isMobile ? 'visible' : undefined}
+                <m.div
+                  className="text-base lg:text-lg text-muted-foreground ml-7"
+                  variants={headerItemVariants}
+                  transition={{ duration: 0.38, delay: 0.08 }}
+                  whileInView={isMobile ? "visible" : undefined}
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
                 >
                   Servers, APIs, and Data Management
@@ -252,7 +357,17 @@ export const SkillsSection = memo(function SkillsSection({ parentContentVisible 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6">
               {backendSkills.map((skill, idx) => (
                 // backend entryDelay base later than frontend (to keep sequence)
-                <SkillCard key={skill.name} {...skill} parentVisible={backendCardsStart} entryDelay={(headerDuration + titleToCardsBase) + (frontendSkills.length * cardStagger) + idx * cardStagger} />
+                <SkillCard
+                  key={skill.name}
+                  {...skill}
+                  parentVisible={backendCardsStart}
+                  entryDelay={
+                    headerDuration +
+                    titleToCardsBase +
+                    frontendSkills.length * cardStagger +
+                    idx * cardStagger
+                  }
+                />
               ))}
             </div>
           </div>

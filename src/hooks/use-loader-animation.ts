@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from "react";
 
 // Duración del loader - OPTIMIZED FOR LCP
 const LOADER_DURATION = 2500; // REDUCED from 5000 for faster LCP
@@ -60,6 +60,6 @@ export function useLoaderAnimation(): LoaderAnimationState {
       loaderFramesToCenter,
       contentCanAnimate,
     }),
-    [appReady, loaderFramesToCenter, contentCanAnimate],
+    [appReady, loaderFramesToCenter, contentCanAnimate]
   );
 }

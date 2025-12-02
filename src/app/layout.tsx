@@ -1,20 +1,19 @@
-import type { Metadata, Viewport } from 'next';
-import { Space_Grotesk } from 'next/font/google';
-import dynamic from 'next/dynamic'; // Importante para Lazy Loading
-import './globals.css';
-import { ThemeProvider } from '@/components/providers/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
-import { ErrorBoundary } from '@/components/error-boundary';
-import { FluidResize } from '@/components/fluid-resize';
+import type { Metadata, Viewport } from "next";
+import { Space_Grotesk } from "next/font/google";
+import dynamic from "next/dynamic";
+import "./globals.css";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { FluidResize } from "@/components/fluid-resize";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PERFORMANCE CONFIGURATION (Lazy Load)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // Carga diferida del Wrapper de animación.
-// 'ssr: true' permite que el HTML se genere, pero el JS de animación se hidrata después.
-const MotionWrapper = dynamic(() => import('@/components/motion-wrapper'), {
-  ssr: true
+const MotionWrapper = dynamic(() => import("@/components/motion-wrapper"), {
+  ssr: true,
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -22,15 +21,21 @@ const MotionWrapper = dynamic(() => import('@/components/motion-wrapper'), {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
   preload: true,
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "sans-serif",
+  ],
   adjustFontFallback: true,
   // @ts-expect-error - fetchPriority is valid but not in types yet
-  fetchPriority: 'high',
+  fetchPriority: "high",
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -38,11 +43,12 @@ const spaceGrotesk = Space_Grotesk({
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const siteConfig = {
-  name: 'Portfolio',
-  description: 'A modern developer portfolio, built with Next.js and Tailwind CSS.',
-  url: 'https://your-domain.com',
-  author: 'Eduardo',
-  locale: 'en_US',
+  name: "Portfolio",
+  description:
+    "A modern developer portfolio, built with Next.js and Tailwind CSS.",
+  url: "https://your-domain.com",
+  author: "Eduardo",
+  locale: "en_US",
 } as const;
 
 export const metadata: Metadata = {
@@ -52,11 +58,18 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['portfolio', 'developer', 'frontend', 'React', 'Next.js', 'TypeScript'],
+  keywords: [
+    "portfolio",
+    "developer",
+    "frontend",
+    "React",
+    "Next.js",
+    "TypeScript",
+  ],
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
   openGraph: {
-    type: 'website',
+    type: "website",
     locale: siteConfig.locale,
     url: siteConfig.url,
     title: siteConfig.name,
@@ -64,7 +77,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
   },
@@ -74,20 +87,20 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f0f0f0' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: "(prefers-color-scheme: light)", color: "#f0f0f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
   ],
 };
 
@@ -111,15 +124,15 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={spaceGrotesk.variable}
-    >
+    <html lang="en" suppressHydrationWarning className={spaceGrotesk.variable}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
         {/* Script ultraligero que no bloquea el hilo principal */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
@@ -128,12 +141,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ErrorBoundary>
             {/* 1. Lógica de resize fuera del hilo crítico */}
             <FluidResize />
-            
+
             {/* 2. Envoltura Lazy para reducir el bundle de JS inicial */}
             <MotionWrapper>
               <main>{children}</main>
             </MotionWrapper>
-            
           </ErrorBoundary>
           <Toaster />
         </ThemeProvider>

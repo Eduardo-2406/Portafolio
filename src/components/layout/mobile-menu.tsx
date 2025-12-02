@@ -1,11 +1,11 @@
 "use client";
 
-import React, { memo, useCallback } from 'react';
-import Link from 'next/link';
-import { AnimatePresence } from 'framer-motion';
-import { m } from 'framer-motion';
-import { AnimatedHamburger } from '../ui/animated-hamburger';
-import type { NavItem } from '@/lib/nav-links';
+import React, { memo, useCallback } from "react";
+import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
+import { m } from "framer-motion";
+import { AnimatedHamburger } from "../ui/animated-hamburger";
+import type { NavItem } from "@/lib/nav-links";
 
 type MobileMenuProps = {
   navItems: readonly NavItem[];
@@ -15,11 +15,11 @@ type MobileMenuProps = {
 
 const contentVariants = {
   hidden: { height: 0, opacity: 0 },
-  visible: { height: 'auto', opacity: 1 },
+  visible: { height: "auto", opacity: 1 },
   exit: { height: 0, opacity: 0 },
 } as const;
 
-const motionTransition = { duration: 0.28, ease: 'easeInOut' } as const;
+const motionTransition = { duration: 0.28, ease: "easeInOut" } as const;
 
 type MenuContentProps = {
   isOpen: boolean;
@@ -27,7 +27,11 @@ type MenuContentProps = {
   setIsOpen: (isOpen: boolean) => void;
 };
 
-const MenuContent = memo(function MenuContent({ isOpen, navItems, setIsOpen }: MenuContentProps) {
+const MenuContent = memo(function MenuContent({
+  isOpen,
+  navItems,
+  setIsOpen,
+}: MenuContentProps) {
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
 
   return (
@@ -43,7 +47,10 @@ const MenuContent = memo(function MenuContent({ isOpen, navItems, setIsOpen }: M
           className="w-full overflow-hidden lg:hidden border-b"
           aria-hidden={!isOpen}
         >
-          <nav className="flex flex-col items-center space-y-1 text-center p-4" aria-label="Mobile navigation">
+          <nav
+            className="flex flex-col items-center space-y-1 text-center p-4"
+            aria-label="Mobile navigation"
+          >
             {navItems.map((item) => (
               <Link
                 key={item.label}
@@ -61,12 +68,22 @@ const MenuContent = memo(function MenuContent({ isOpen, navItems, setIsOpen }: M
   );
 });
 
-const MobileMenuRoot = memo(function MobileMenu({ isMenuOpen, setIsMenuOpen }: Omit<MobileMenuProps, 'navItems'>) {
-  const toggle = useCallback(() => setIsMenuOpen(!isMenuOpen), [setIsMenuOpen, isMenuOpen]);
+const MobileMenuRoot = memo(function MobileMenu({
+  isMenuOpen,
+  setIsMenuOpen,
+}: Omit<MobileMenuProps, "navItems">) {
+  const toggle = useCallback(
+    () => setIsMenuOpen(!isMenuOpen),
+    [setIsMenuOpen, isMenuOpen]
+  );
 
   return (
     <div className="lg:hidden">
-      <AnimatedHamburger isOpen={isMenuOpen} onClick={toggle} aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'} />
+      <AnimatedHamburger
+        isOpen={isMenuOpen}
+        onClick={toggle}
+        aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+      />
     </div>
   );
 });

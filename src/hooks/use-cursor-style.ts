@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from "react";
 
 /**
  * Hook to manage cursor style based on mobile/desktop view.
@@ -11,16 +11,16 @@ export function useCursorStyle(isMobileView: boolean) {
   const initialCursorRef = useRef<string | null>(null);
 
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const el = document.body;
 
     // Store the initial cursor value only on first run
     if (initialCursorRef.current === null) {
-      initialCursorRef.current = el.style.cursor || '';
+      initialCursorRef.current = el.style.cursor || "";
     }
 
-    const desired = isMobileView ? 'default' : 'none';
+    const desired = isMobileView ? "default" : "none";
 
     if (el.style.cursor !== desired) {
       el.style.cursor = desired;

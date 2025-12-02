@@ -1,34 +1,46 @@
 "use client";
 
-import { memo, useMemo, useCallback } from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { SocialIcon } from '../social-icon';
-import { socialLinks, type SocialPlatform } from '@/lib/data';
-import { m } from 'framer-motion';
-import type { NavItem } from '@/lib/nav-links';
+import { memo, useMemo, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { SocialIcon } from "../social-icon";
+import { socialLinks, type SocialPlatform } from "@/lib/data";
+import { m } from "framer-motion";
+import type { NavItem } from "@/lib/nav-links";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
-const columnAnim = (delay = 0) => ({ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0, transition: { duration: 0.45, delay } } });
+const columnAnim = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.45, delay } },
+});
 
-type FooterProps = { onNavigate?: (href: NavItem['href']) => void };
+type FooterProps = { onNavigate?: (href: NavItem["href"]) => void };
 
 export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
-  const navLinks = useMemo(() => [
-    { label: 'Sobre Mí', href: '#about' as const },
-    { label: 'Proyectos', href: '#portfolio' as const },
-    { label: 'Habilidades', href: '#skills' as const },
-    { label: 'Contacto', href: '#contact' as const },
-  ], []);
+  const navLinks = useMemo(
+    () => [
+      { label: "Sobre Mí", href: "#about" as const },
+      { label: "Proyectos", href: "#portfolio" as const },
+      { label: "Habilidades", href: "#skills" as const },
+      { label: "Contacto", href: "#contact" as const },
+    ],
+    []
+  );
 
-  const platforms = useMemo(() => Object.keys(socialLinks) as Array<keyof typeof socialLinks>, []);
+  const platforms = useMemo(
+    () => Object.keys(socialLinks) as Array<keyof typeof socialLinks>,
+    []
+  );
 
-  const handleNavClick = useCallback((href: NavItem['href']) => (e: React.MouseEvent) => {
-    if (onNavigate) {
-      e.preventDefault();
-      onNavigate(href);
-    }
-  }, [onNavigate]);
+  const handleNavClick = useCallback(
+    (href: NavItem["href"]) => (e: React.MouseEvent) => {
+      if (onNavigate) {
+        e.preventDefault();
+        onNavigate(href);
+      }
+    },
+    [onNavigate]
+  );
 
   const isMobile = useIsMobile();
   return (
@@ -44,22 +56,60 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
             transition={{ duration: 0.45, delay: isMobile ? 0.04 : 0 }}
             className="space-y-6 md:space-y-4"
           >
-            <m.h3 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.08 : 0 }} className="text-lg font-bold font-headline text-foreground">Eduardo R.</m.h3>
-            <m.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.14 : 0 }} className="text-xs text-foreground max-w-xs">Creating web solutions thought out from architecture to the last line of code.</m.p>
-            <m.p initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.18 : 0 }} className="text-xs text-foreground/80">Have a project in mind? Let&apos;s talk!</m.p>
+            <m.h3
+              initial={isMobile ? { opacity: 0, y: 18 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.38, delay: isMobile ? 0.08 : 0 }}
+              className="text-lg font-bold font-headline text-foreground"
+            >
+              Eduardo R.
+            </m.h3>
+            <m.p
+              initial={isMobile ? { opacity: 0, y: 18 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.38, delay: isMobile ? 0.14 : 0 }}
+              className="text-xs text-foreground max-w-xs"
+            >
+              Creating web solutions thought out from architecture to the last
+              line of code.
+            </m.p>
+            <m.p
+              initial={isMobile ? { opacity: 0, y: 18 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.38, delay: isMobile ? 0.18 : 0 }}
+              className="text-xs text-foreground/80"
+            >
+              Have a project in mind? Let&apos;s talk!
+            </m.p>
           </m.div>
 
           {/* Columna 2: Navegación */}
           <m.div
-            initial={isMobile ? { opacity: 0, y: 24 } : columnAnim(0.08).initial}
+            initial={
+              isMobile ? { opacity: 0, y: 24 } : columnAnim(0.08).initial
+            }
             whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
             viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
             animate={!isMobile ? columnAnim(0.08).animate : undefined}
             transition={{ duration: 0.45, delay: isMobile ? 0.12 : 0.08 }}
             className="space-y-6 md:space-y-4"
           >
-            <m.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.16 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Navigation</m.h4>
-            <nav className="flex flex-col space-y-3 md:space-y-2" aria-label="Quick links">
+            <m.h4
+              initial={isMobile ? { opacity: 0, y: 18 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.38, delay: isMobile ? 0.16 : 0 }}
+              className="text-sm font-semibold text-foreground uppercase tracking-wider"
+            >
+              Navigation
+            </m.h4>
+            <nav
+              className="flex flex-col space-y-3 md:space-y-2"
+              aria-label="Quick links"
+            >
               {navLinks.map((item, idx) => (
                 <m.a
                   key={item.href}
@@ -68,7 +118,10 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
                   initial={isMobile ? { opacity: 0, y: 16 } : undefined}
                   whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
-                  transition={{ duration: 0.32, delay: isMobile ? 0.18 + idx * 0.08 : 0 }}
+                  transition={{
+                    duration: 0.32,
+                    delay: isMobile ? 0.18 + idx * 0.08 : 0,
+                  }}
                   className="text-sm text-foreground/80 hover:text-foreground transition-colors w-fit cursor-pointer"
                 >
                   {item.label}
@@ -79,29 +132,53 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
 
           {/* Columna 3: Social */}
           <m.div
-            initial={isMobile ? { opacity: 0, y: 24 } : columnAnim(0.16).initial}
+            initial={
+              isMobile ? { opacity: 0, y: 24 } : columnAnim(0.16).initial
+            }
             whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
             viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
             animate={!isMobile ? columnAnim(0.16).animate : undefined}
             transition={{ duration: 0.45, delay: isMobile ? 0.18 : 0.16 }}
             className="space-y-5 md:space-y-3"
           >
-            <m.h4 initial={isMobile ? { opacity: 0, y: 18 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.38, delay: isMobile ? 0.22 : 0 }} className="text-sm font-semibold text-foreground uppercase tracking-wider">Connect With Me</m.h4>
-            <m.ul className="flex items-center gap-4 md:gap-3 flex-wrap" aria-label="Social networks">
+            <m.h4
+              initial={isMobile ? { opacity: 0, y: 18 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.38, delay: isMobile ? 0.22 : 0 }}
+              className="text-sm font-semibold text-foreground uppercase tracking-wider"
+            >
+              Connect With Me
+            </m.h4>
+            <m.ul
+              className="flex items-center gap-4 md:gap-3 flex-wrap"
+              aria-label="Social networks"
+            >
               {platforms.map((platform, idx) => (
                 <m.li
                   key={platform}
-                  initial={isMobile ? { opacity: 0, scale: 0.8, y: 12 } : undefined}
-                  whileInView={isMobile ? { opacity: 1, scale: 1, y: 0 } : undefined}
+                  initial={
+                    isMobile ? { opacity: 0, scale: 0.8, y: 12 } : undefined
+                  }
+                  whileInView={
+                    isMobile ? { opacity: 1, scale: 1, y: 0 } : undefined
+                  }
                   viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
-                  transition={{ duration: 0.32, delay: isMobile ? 0.24 + idx * 0.08 : 0 }}
+                  transition={{
+                    duration: 0.32,
+                    delay: isMobile ? 0.24 + idx * 0.08 : 0,
+                  }}
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <SocialIcon 
-                    platform={platform as SocialPlatform} 
-                    url={socialLinks[platform]} 
-                    variant={typeof window !== 'undefined' && window.innerWidth < 1024 ? 'lateral' : undefined}
+                  <SocialIcon
+                    platform={platform as SocialPlatform}
+                    url={socialLinks[platform]}
+                    variant={
+                      typeof window !== "undefined" && window.innerWidth < 1024
+                        ? "lateral"
+                        : undefined
+                    }
                   />
                 </m.li>
               ))}
@@ -118,10 +195,20 @@ export const Footer = memo(function Footer({ onNavigate }: FooterProps = {}) {
           className="border-t border-foreground/10 pt-6 md:pt-4"
         >
           <div className="flex flex-col md:flex-row items-center md:justify-center justify-between gap-2 text-xs text-foreground/60">
-            <m.p initial={isMobile ? { opacity: 0, y: 10 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.32, delay: isMobile ? 0.34 : 0 }}>
+            <m.p
+              initial={isMobile ? { opacity: 0, y: 10 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.32, delay: isMobile ? 0.34 : 0 }}
+            >
               © {CURRENT_YEAR} Eduardo R.
             </m.p>
-            <m.p initial={isMobile ? { opacity: 0, y: 10 } : undefined} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={isMobile ? { once: true, amount: 0.18 } : undefined} transition={{ duration: 0.32, delay: isMobile ? 0.38 : 0 }}>
+            <m.p
+              initial={isMobile ? { opacity: 0, y: 10 } : undefined}
+              whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={isMobile ? { once: true, amount: 0.18 } : undefined}
+              transition={{ duration: 0.32, delay: isMobile ? 0.38 : 0 }}
+            >
               Developed with Next.js, React, and Tailwind CSS
             </m.p>
           </div>

@@ -1,18 +1,18 @@
 "use client";
 
-import { memo, useRef, useLayoutEffect, useCallback, useState } from 'react';
-import { m } from 'framer-motion';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { ThemeToggleButton } from '@/components/theme-toggle-button';
-import { navItems, type NavItem } from '@/lib/nav-links';
-import { cn } from '@/lib/utils';
+import { memo, useRef, useLayoutEffect, useCallback, useState } from "react";
+import { m } from "framer-motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { ThemeToggleButton } from "@/components/theme-toggle-button";
+import { navItems, type NavItem } from "@/lib/nav-links";
+import { cn } from "@/lib/utils";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TIPOS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface DesktopHeaderProps {
-  onNavigate: (href: NavItem['href']) => void;
+  onNavigate: (href: NavItem["href"]) => void;
   activeSection: number;
 }
 
@@ -38,12 +38,14 @@ const INDICATOR_SPRING_CONFIG = {
 // COMPONENTE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export const DesktopHeader = memo(function DesktopHeader({ 
-  onNavigate, 
-  activeSection 
+export const DesktopHeader = memo(function DesktopHeader({
+  onNavigate,
+  activeSection,
 }: DesktopHeaderProps) {
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle | null>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle | null>(
+    null
+  );
 
   // useLayoutEffect para medir y posicionar antes del paint
   useLayoutEffect(() => {
@@ -62,16 +64,21 @@ export const DesktopHeader = memo(function DesktopHeader({
   }, [activeSection]);
 
   const prefersReducedMotion = useReducedMotion();
-  const indicatorTransition = prefersReducedMotion ? { duration: 0 } : INDICATOR_SPRING_CONFIG;
+  const indicatorTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : INDICATOR_SPRING_CONFIG;
 
   // Callback estable para asignar refs a los botones
-  const setButtonRef = useCallback((index: number) => (el: HTMLButtonElement | null) => {
-    buttonRefs.current[index] = el;
-  }, []);
+  const setButtonRef = useCallback(
+    (index: number) => (el: HTMLButtonElement | null) => {
+      buttonRefs.current[index] = el;
+    },
+    []
+  );
 
   // Recompute indicator on resize to keep it in sync when layout changes
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     let raf = 0;
     const handleResize = () => {
@@ -80,15 +87,18 @@ export const DesktopHeader = memo(function DesktopHeader({
       raf = window.requestAnimationFrame(() => {
         const activeButton = buttonRefs.current[activeSection];
         if (activeButton) {
-          setIndicatorStyle({ left: activeButton.offsetLeft, width: activeButton.offsetWidth });
+          setIndicatorStyle({
+            left: activeButton.offsetLeft,
+            width: activeButton.offsetWidth,
+          });
         }
         raf = 0;
       });
     };
 
-    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (raf) window.cancelAnimationFrame(raf);
     };
   }, [activeSection]);
@@ -96,7 +106,7 @@ export const DesktopHeader = memo(function DesktopHeader({
   return (
     <header className="sticky top-4 z-50 w-full bg-transparent">
       <div className="container mx-auto flex h-16 items-center justify-center px-4 md:px-6">
-        <nav 
+        <nav
           className="relative flex justify-center items-center gap-1 bg-foreground/5 dark:bg-card/70 px-2 py-1.5 rounded-2xl border border-border/40 w-[580px]"
           role="navigation"
           aria-label="Main navigation"
@@ -106,19 +116,19 @@ export const DesktopHeader = memo(function DesktopHeader({
               key={item.href}
               ref={setButtonRef(index)}
               onClick={() => onNavigate(item.href)}
-              aria-current={activeSection === index ? 'page' : undefined}
+              aria-current={activeSection === index ? "page" : undefined}
               className={cn(
                 "relative whitespace-nowrap font-medium transition-colors duration-300 rounded-xl px-6 py-2 tracking-wide z-10 flex-1",
                 "text-[clamp(0.875rem,1vw,1.125rem)]",
                 activeSection === index
-                  ? 'text-primary'
-                  : 'text-foreground/70 hover:text-primary'
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
               )}
             >
               {item.label}
             </button>
           ))}
-          
+
           {/* Animated indicator - only render when we have measurements */}
           {indicatorStyle && (
             <m.div
@@ -132,9 +142,9 @@ export const DesktopHeader = memo(function DesktopHeader({
               transition={indicatorTransition}
               style={{
                 left: 0,
-                height: 'calc(100% - 12px)',
-                top: '6px',
-                willChange: 'transform, width',
+                height: "calc(100% - 12px)",
+                top: "6px",
+                willChange: "transform, width",
               }}
             />
           )}

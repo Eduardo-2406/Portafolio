@@ -33,22 +33,28 @@ export function Marquee({
           pauseOnHover && "group-hover:[animation-play-state:paused]"
         )}
         style={{
-          animationName: 'marqueeScroll',
-          animationDuration: 'var(--duration, 20s)',
-          animationTimingFunction: 'linear',
-          animationIterationCount: 'infinite',
-          animationPlayState: paused ? 'paused' : 'running',
-          willChange: 'transform',
+          animationName: "marqueeScroll",
+          animationDuration: "var(--duration, 20s)",
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationPlayState: paused ? "paused" : "running",
+          willChange: "transform",
         }}
       >
         {/* Duplicamos el contenido para bucle continuo */}
         <div className="flex items-center gap-8">{children}</div>
-        <div className="flex items-center gap-8" aria-hidden>{children}</div>
+        <div className="flex items-center gap-8" aria-hidden>
+          {children}
+        </div>
       </div>
       <style jsx global>{`
         @keyframes marqueeScroll {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
         }
         .marquee {
           animation-name: marqueeScroll;

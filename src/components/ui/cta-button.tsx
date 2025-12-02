@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type CtaButtonProps = {
   onClick?: () => void;
@@ -11,7 +11,12 @@ type CtaButtonProps = {
   className?: string;
 };
 
-export const CtaButton = ({ onClick, children, icon, className }: CtaButtonProps) => {
+export const CtaButton = ({
+  onClick,
+  children,
+  icon,
+  className,
+}: CtaButtonProps) => {
   const defaultIcon = (
     <svg
       id="arrow-horizontal"

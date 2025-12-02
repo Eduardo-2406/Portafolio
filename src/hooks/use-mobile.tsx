@@ -1,11 +1,12 @@
-import { useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from "react";
 
 const MOBILE_BREAKPOINT = 1280;
 
 let _mobileMql: MediaQueryList | null = null;
 
 function getMobileMql(): MediaQueryList | null {
-  if (typeof window === 'undefined' || typeof window.matchMedia === 'undefined') return null;
+  if (typeof window === "undefined" || typeof window.matchMedia === "undefined")
+    return null;
   if (_mobileMql === null) {
     _mobileMql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
   }
@@ -13,8 +14,8 @@ function getMobileMql(): MediaQueryList | null {
 }
 
 function addMqlListener(mql: MediaQueryList, cb: () => void) {
-  if ('addEventListener' in mql) {
-    mql.addEventListener('change', cb);
+  if ("addEventListener" in mql) {
+    mql.addEventListener("change", cb);
   } else {
     // Legacy Safari
     // @ts-expect-error addListener exists on older types
@@ -23,8 +24,8 @@ function addMqlListener(mql: MediaQueryList, cb: () => void) {
 }
 
 function removeMqlListener(mql: MediaQueryList, cb: () => void) {
-  if ('removeEventListener' in mql) {
-    mql.removeEventListener('change', cb);
+  if ("removeEventListener" in mql) {
+    mql.removeEventListener("change", cb);
   } else {
     // @ts-expect-error removeListener exists on older types
     mql.removeListener(cb);

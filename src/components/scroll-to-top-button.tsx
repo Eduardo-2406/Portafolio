@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { ArrowUp } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
-import { m } from 'framer-motion';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { useState, useEffect, useCallback } from "react";
+import { ArrowUp } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import { m } from "framer-motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export function ScrollToTopButton() {
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       if (rafId !== null) window.cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -58,7 +58,12 @@ export function ScrollToTopButton() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.3, type: 'spring', stiffness: 260, damping: 20 }}
+          transition={{
+            duration: 0.3,
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          }}
         >
           <button
             onClick={scrollToTop}

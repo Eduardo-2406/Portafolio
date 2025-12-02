@@ -1,5 +1,5 @@
-import type { Variants } from 'framer-motion';
-import { ANIMATION_TIMING } from './animation-constants';
+import type { Variants } from "framer-motion";
+import { ANIMATION_TIMING } from "./animation-constants";
 
 // Social icons animation variants
 export const socialContainerVariants: Variants = {

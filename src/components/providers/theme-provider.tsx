@@ -33,7 +33,9 @@ export const ThemeProvider = ({
         if (stored === "light" || stored === "dark") {
           resolved = stored;
         } else if (window.matchMedia) {
-          resolved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          resolved = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
         }
       } catch {}
       window.requestAnimationFrame(() => setTheme(resolved));
